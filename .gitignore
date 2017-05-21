@@ -1,5 +1,17 @@
-# Compiled class file
+# Compiled source #
 *.class
+*~
+*.java#
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Log file
 *.log
@@ -11,6 +23,7 @@
 .mtj.tmp/
 
 # Package Files #
+#Depending on nature of project, might remove--not likely though
 *.jar
 *.war
 *.ear
