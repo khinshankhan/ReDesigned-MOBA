@@ -11,7 +11,7 @@ PImage loadImagex(String inFile){
   try {
 
     PixelGrabber grabber = 
-      new PixelGrabber(image, 0, 0, -1, -1, false);
+      new PixelGrabber(image, dy, dy, 1366, 768, false);
 
     if (grabber.grabPixels()) {
       int w = grabber.getWidth();
