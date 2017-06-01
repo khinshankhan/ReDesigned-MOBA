@@ -1,0 +1,13 @@
+Map:
+-Nodes cover the whole map, except in areas of obstacles
+-Nodes will be connecting in hexagonal patterns
+--Node class
+----Convert coordinates to nodes
+--Loop to lay down nodes?
+----use ifs to skip around
+--make them 'aware' of each other
+
+Characters:
+-AFTER MAP+ NODES
+--Will traverse on nodes
+--WASD might be used in combos
