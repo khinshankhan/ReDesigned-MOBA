@@ -1,0 +1,8 @@
+random file to test shell scripting
+ay first
+need to get in line by line reading
+wscjf.
+ay second
+q	adj/el
+ay third!
+scan
