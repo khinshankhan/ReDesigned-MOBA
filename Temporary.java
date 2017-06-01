@@ -1,5 +1,5 @@
 public interface Temporary{
 
-    int counter;
-
+    public void live();
+    
 }

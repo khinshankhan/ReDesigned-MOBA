@@ -1,10 +1,40 @@
-public class EnemyChampion extends Champion implements Enemy{
+import java.util.ArrayDeque;
+public class EnemyChampion extends Enemy{
 
-    public EnemyChampion(int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int dx, int dy, int pic, int hprgn, int mp, int mprgn, int mPow, int pritype){
-	super(int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int dx, int dy, int pic, int hprgn, int mp, int mprgn, int mPow, int pritype);
-        dropgold = 300;
-	target = null;
-        visible = false;
+    int hpregen;
+    int mana;
+    int mpregen;
+    int magicPower;
+    int critChance;
+    int currentDanger;
+    int objective;
+    int[] cooldowns;
+    int[] moves;
+    int[] inventory;
+    int gold;
+    boolean canauto;
+    boolean canskill;
+    boolean canitem;
+    ArrayDeque<Mnode> Path;
+    
+    public EnemyChampion(int dx, int dy, int pic, int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int hprgn, int mp, int mprgn, int mPow, int pritype){
+	super(dx, dy, pic, dmg, hp, arm, mr, atkspd, mvspd, rnge);
+	dropgold = 300;
+	hpregen = hprgn;
+	mana = mp;
+	magicPower = mPow;
+	objective = pritype;
+	critChance = 0;
+	mpregen = mprgn;
+        currentDanger = 0;
+	cooldowns = new int[4];
+	moves = new int[4];
+	inventory = new int[6];
+	gold = 0;
+	canauto = true;
+	canskill = true;
+	canitem = true;
+	Path = new ArrayDeque<Mnode>();
     }
 
 }

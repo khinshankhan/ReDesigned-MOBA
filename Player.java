@@ -1,13 +1,40 @@
-public class Player extends Champion implements Ally{
+import java.util.ArrayDeque;
+public class Player extends Ally{
 
-    //this class is here to distinguish the player from teammates.
-    //Players do function the same as other AllyChampion though, and won't require extra code within the actual class.
+    int hpregen;
+    int mana;
+    int mpregen;
+    int magicPower;
+    int critChance;
+    int currentDanger;
+    int objective;
+    int[] cooldowns;
+    int[] moves;
+    int[] inventory;
+    int gold;
+    boolean canauto;
+    boolean canskill;
+    boolean canitem;
+    ArrayDeque<Mnode> Path;
 
-    public Player(int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int dx, int dy, int pic, int hprgn, int mp, int mprgn, int mPow, int pritype, int visrange){
-	super(int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int dx, int dy, int pic, int hprgn, int mp, int mprgn, int mPow, int pritype);
-	sight = visrange;
-	target = null;
-	blind = false;
+    public Player(int dx, int dy, int pic, int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int hprgn, int mp, int mprgn, int mPow, int pritype){
+	super(dx, dy, pic, dmg, hp, arm, mr, atkspd, mvspd, rnge);
+	sight = 600;
+	hpregen = hprgn;
+	mana = mp;
+	magicPower = mPow;
+	objective = pritype;
+	critChance = 0;
+	mpregen = mprgn;
+        currentDanger = 0;
+	cooldowns = new int[4];
+	moves = new int[4];
+	inventory = new int[6];
+	gold = 0;
+	canauto = true;
+	canskill = true;
+	canitem = true;
+	Path = new ArrayDeque<Mnode>();
     }
     
 }

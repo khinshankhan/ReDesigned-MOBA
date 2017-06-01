@@ -1,17 +1,21 @@
-public class TemporaryBuff implements Temporary{
+public class Buff implements Temporary{
 
-    //or interface
+    public int counter;
     public int effect;
     public int effectDuration;
     Alive target;
 
+    public void live(){
+	counter --;
+    }
+    
     public void addEffect(){
     }
 
     public void removeEffect(){
     }
 
-    public TemporaryBuff(int eff, int dur, Alive tar, int lifetime){
+    public Buff(int eff, int dur, Alive tar, int lifetime){
 	target = tar;
 	effect = eff;
 	effectDuration = dur;

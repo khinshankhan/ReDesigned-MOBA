@@ -1,7 +1,7 @@
 abstract class OnScreen{
 
     public int x;
-    public iny y;
+    public int y;
     public int sprite;
 
     public void show(int dx, int dy){
