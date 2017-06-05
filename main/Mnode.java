@@ -47,4 +47,8 @@ public class Mnode implements Comparable<Mnode>{
     public Mnode previous(){
 	return previous;
     }
+
+    public String toString(){
+	return "("+x+","+y+")";
+    }
 }

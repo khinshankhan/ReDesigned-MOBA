@@ -1,6 +1,6 @@
 public class Solver{
     public Map map;
-    public int[][] moves = { {0, 1}, {0, -1}, {1, -1}, {-1, -1}, {1, 1}, {-1, 1} };
+    public int[][] moves = { {0, 2}, {0, -2}, {1, -2}, {-1, -2}, {1, 1}, {-1, 1} };
     public Mnode start;
     public Mnode end;
     public char[][] maze;
@@ -21,6 +21,7 @@ public class Solver{
 	boolean aStar= true;
 	storage = new PriorityQueueFrontier(false);
 	storage.add(start);
+	System.out.println(start+"\n"+end);
 	int sr= start.y *-1;//start row
 	int sc= start.x;//start col
 	int er= end.y *-1;//end row
@@ -46,6 +47,7 @@ public class Solver{
 		try{
 		    int r = row + move[0];
 		    int c = col + move[1];
+		    System.out.println(map.map[r][c]);
 		    if (map.map[r][c].walkable == true && maze[r][c] == ' '){
 			int startDist= Math.abs(sr - r)+ Math.abs(sc - c);
 			int endDist= Math.abs(er - r)+ Math.abs(ec - c);
