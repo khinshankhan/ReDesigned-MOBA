@@ -54,7 +54,12 @@ void draw() {
 }
 
 void mouseClicked() {
-  int x = ((mouseX - 40) / 41) + (((mouseX - 40) % 41) / 20);
-  int y = ((mouseY - 50) / 41) + (((mouseX - 50) % 41) / 20);
-  moves = Mnode.calculate(moves.peek(), map[x][y], 4);
+  Mnode current = moves.peek();
+  int x = ((mouseX - 40) / 41);// + (((mouseX - 40) % 41) / 20);
+  int y = ((mouseY - 50) / 41);// + (((mouseX - 50) % 41) / 20);
+  if ( (((current.x - 40) / 41) == x) && (((current.y - 40) / 41) == y) ){
+    moves = Mnode.calculate(moves.peek(), new Mnode(mouseX, mouseY, true), 4);
+  } else {
+    moves = Mnode.calculate(moves.peek(), map[x][y], 4);
+  }
 }
