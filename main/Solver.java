@@ -1,6 +1,6 @@
 public class Solver{
     public Map map;
-    public int[][] moves = { {-1, 1}, {1, 1}, {1, -1}, {-1, -1}, {2, 0}, {-2, 0} };
+    public int[][] moves = { {0, 1}, {0, -1}, {1, -1}, {-1, -1}, {1, 1}, {-1, 1} };
     public Mnode start;
     public Mnode end;
     public char[][] maze;
@@ -52,7 +52,7 @@ public class Solver{
 			storage.add(new Mnode(r, c, current, startDist, endDist, aStar));
 			maze[r][c] = '?';
                     }
-		}catch (IndexOutOfBoundsException e){}
+		}catch (IndexOutOfBoundsException | NullPointerException e){}
 	    }
 	    char setter= (moved==0) ? '.' : '@';
 	    maze[row][col] = setter;
