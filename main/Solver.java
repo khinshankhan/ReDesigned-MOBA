@@ -1,78 +1,89 @@
+import java.util.ArrayDeque;
+
 public class Solver{
-    public Map map;
-    public int[][] moves = { {0, 2}, {0, -2}, {1, -2}, {-1, -2}, {1, 1}, {-1, 1} };
+    public Mnode[][] map;
+    public int[][] moves = { {1,1}, {-1,-1}, {1,-1}, {-1,1}, {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
     public Mnode start;
     public Mnode end;
-    public char[][] maze;
+    public ArrayDeque<Mnode> locations;
 
-    public Solver(Map map) {
-        this.map = map;
+    public Solver(){
     }
 
-    public void solve(Mnode s, Mnode e) {
-	maze = new char [map.map.length][map.map[0].length];
+    public Solver(Mnode s, Mnode e, Mnode[][] map) {
+        solve(s, e, map);
+    }
+
+    public void solve(Mnode s, Mnode e, Mnode[][] map) {
+        this.map = map;
 	start = s;
 	end = e;
 	solve(1);
     }
 
     public void solve(int i) {
+        locations = new ArrayDeque<Mnode>();
         Frontier storage;
 	boolean aStar= true;
 	storage = new PriorityQueueFrontier(false);
 	storage.add(start);
-	System.out.println(start+"\n"+end);
-	int sr= start.y *-1;//start row
-	int sc= start.x;//start col
-	int er= end.y *-1;//end row
-	int ec= end.x;//end col
+	//System.out.println(start+"\n"+end);
+	int sr= start.row;//start row
+	int sc= start.col;//start col
+	int er= end.row;//end row
+	int ec= end.col;//end col
+	System.out.println(sr+","+sc+":"+er+","+ec);
+	int counter = 0;
+  int gao = 0;
 	while (storage.hasNext()){
+	    counter++;
 	    Mnode current = storage.next();
-	    int row = current.y *-1;
-	    int col = current.x;
+	    int row = current.row;
+	    int col = current.col;
 	    int dist = Math.abs(er - row)+ Math.abs(ec - col);
 	    if(dist == 0){
-		maze[er][ec] = 'E';
-		while(current.x != start.x && current.y != start.y){
+		System.out.println(gao+"TRACEBACK "+counter);
+		while(current.row != start.row && current.col != start.col){
+		    locations.addFirst(current);
 		    current = current.previous();
-		    maze[current.y * -1][current.x] = '@';
-		    System.out.println(this.toString());
+		    //System.out.println(this.toString());
 		}
-		maze[sr][sc] = 'S';
-		System.out.println(this.toString());
+		//System.out.println(this.toString());
 		return;
 	    }
 	    int moved = 0;
 	    for (int[] move : moves) {
 		try{
+   gao++;
 		    int r = row + move[0];
 		    int c = col + move[1];
-		    System.out.println(map.map[r][c]);
-		    if (map.map[r][c].walkable == true && maze[r][c] == ' '){
+		    //System.out.println(map[r][c]);
+		    if (map[r][c].walk == true){
 			int startDist= Math.abs(sr - r)+ Math.abs(sc - c);
 			int endDist= Math.abs(er - r)+ Math.abs(ec - c);
-			storage.add(new Mnode(r, c, current, startDist, endDist, aStar));
-			maze[r][c] = '?';
+  Mnode temp = new Mnode(r, c, current, startDist, endDist, aStar);
+			storage.add(temp);
+			//should i have smth here?
                     }
 		}catch (IndexOutOfBoundsException | NullPointerException e){}
 	    }
-	    char setter= (moved==0) ? '.' : '@';
-	    maze[row][col] = setter;
-	    System.out.println(this.toString());
+	    map[row][col].walk = false;
+	    //System.out.println(this.toString());
 	}
     }
 
     public String toString() {
         String s="";
-	for(int i = 0; i < maze.length; i++){
-	    for(int j = 0; j < maze[0].length; j++){
-		char x = maze[i][j];
-		if(maze[i][j] == '.')
+	/*
+	for(int i = 0; i < map.length; i++){
+	    for(int j = 0; j < map[0].length; j++){
+		char x = map[i][j];
+		if(map[i][j] == walk)
 		    x= 'X';
 		s += x;
 	    }
 	    s += "\n";
-	}
+	}*/
 	return s;
     }
 }
