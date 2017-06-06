@@ -5,22 +5,34 @@ public class Mnode implements Comparable<Mnode>{
     public int x;
     public int y;
     public int z;
+    public int row;
+    public int col;
     public boolean walkable;
     public int distToStart, distToGoal; //Manhattan distance?
     public Mnode previous; //connect it
     public boolean aStar; //type of algorithm
     public int priority; //smart priority
-    
+    public boolean walk;
+
     public Mnode(int dx, int dy, boolean clear){
 	x = dx;
 	y = dy;
 	z = x *-1 -y;
-	walkable = clear;
+	walkable = walk = clear;
+    }
+    
+    public Mnode(int r, int c, int dx, int dy, boolean clear){
+	row = r;
+	col = c;
+	x = dx;
+	y = dy;
+	z = x *-1 -y;
+	walkable = walk = clear;
     }
 
     public Mnode(int r, int c, Mnode previous , int distToStart, int distToGoal){
-	y = r;
-	x = c;
+	row = r;
+	col = c;
         this.previous = previous;
 	this.distToStart = distToStart;
 	this.distToGoal = distToGoal;
@@ -51,7 +63,8 @@ public class Mnode implements Comparable<Mnode>{
     }
 
     public String toString(){
-	return "("+x+","+y+")";
+	//return "("+x+","+y+")";
+	return "("+row+","+col+")";
     }
 
     public static double max(double x, double y){

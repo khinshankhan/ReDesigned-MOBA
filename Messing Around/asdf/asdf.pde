@@ -67,3 +67,14 @@ void mouseClicked() {
   */
   dy=dx+=5;
 }
+void mousePressed() {
+  loadPixels();
+  for (int i = 0; i < width*height; i++) {
+    if (pixels[i] == 0xFF000000) {  // If it is red
+      pixels[i] = 0xff00ff00;  // Make it green
+      continue;  // Continue to avoid the next statement
+    }
+    if (pixels[i] == 0xff00ff00) pixels[i] = 0xffff0000; // Make green red
+  }
+  updatePixels();
+}
