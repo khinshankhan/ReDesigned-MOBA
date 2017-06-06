@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+
 public class Mnode implements Comparable<Mnode>{
 
     public int x;
@@ -53,9 +54,13 @@ public class Mnode implements Comparable<Mnode>{
 	return "("+x+","+y+")";
     }
 
+    public static double max(double x, double y){
+	return Math.max(x,y);
+    }
     public static ArrayDeque<Mnode> calculate(Mnode s, Mnode e, int spd){
 	ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
 	double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));
+	//double dist = max(Math.abs(e.x-s.x), Math.abs(e.y-s.y));
 	//System.out.println((double)(dist / spd));
 	double times = (double)(dist / spd);
         double incrx = (double)((e.x - s.x) / times);
@@ -71,11 +76,12 @@ public class Mnode implements Comparable<Mnode>{
 	    //System.out.println(incrx + " " + incry);
 	    //System.out.println(nowx + " " + nowy);
 	}
-	//System.out.println(moves.size());
+	System.out.println(moves.size());
 	return moves;
     }
 
     //public static void main(String[] args){
     //	ArrayDeque<Mnode> temp = calculate(new Mnode(0, 0, true), new Mnode (400, 400, true), 10);
     //}
+    //RECOVER PLS
 }

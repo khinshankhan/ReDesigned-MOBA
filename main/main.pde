@@ -17,6 +17,27 @@ void setup() {
       }
     }
   }
+  //hardcode
+  //i messed up the coordinates
+  map[2][4].walkable = false;
+  map[2][5].walkable = false;
+  map[2][9].walkable = false;
+  map[2][10].walkable = false;
+  map[2][11].walkable = false;
+  map[2][12].walkable = false;
+  map[2][15].walkable = false;
+  map[2][5].walkable = false;
+  map[2][5].walkable = false;
+  map[2][5].walkable = false;
+  //
+  for(int i = 0; i < 24; i++){
+    for(int j = 0; j < 24; j++){
+      int a = (map[i][j].walkable == true) ? 1 : 0;
+      System.out.print(a);
+    }
+    System.out.println();
+  }//
+  
   moves.addLast(map[0][23]);
   /*for (int x = 0; x < 24; x ++){
    for (int y = 0; y < 24; y ++){

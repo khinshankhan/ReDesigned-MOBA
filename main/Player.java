@@ -16,6 +16,7 @@ public class Player extends Ally{
     boolean canskill;
     boolean canitem;
     ArrayDeque<Mnode> Path;
+    ArrayDeque<Mnode> animate;
 
     public Player(int dx, int dy, int pic, int dmg, int hp, int arm, int mr, int atkspd, int mvspd, int rnge, int hprgn, int mp, int mprgn, int mPow, int pritype){
 	super(dx, dy, pic, dmg, hp, arm, mr, atkspd, mvspd, rnge);
