@@ -89,7 +89,7 @@ public class Mnode implements Comparable<Mnode>{
 	    //System.out.println(incrx + " " + incry);
 	    //System.out.println(nowx + " " + nowy);
 	}
-	System.out.println(moves.size());
+	//System.out.println(moves.size());
 	return moves;
     }
 
