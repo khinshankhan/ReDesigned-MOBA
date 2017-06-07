@@ -70,6 +70,9 @@ public class Mnode implements Comparable<Mnode>{
     public static double max(double x, double y){
 	return Math.max(x,y);
     }
+    public static double max(double x, double y, double z){
+	return Math.max(Math.max(x,y), Math.max(y,z));
+    }
     public static ArrayDeque<Mnode> calculate(Mnode s, Mnode e, int spd){
 	ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
 	double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));

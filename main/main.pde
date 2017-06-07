@@ -15,7 +15,7 @@ void setup() {
   for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
     for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
       if ((x == 23) || (y == 23) || (x == 0) || (y == 0)) {
-        map[x][y] = new Mnode(dx, dy, false);
+        map[x][y] = new Mnode(x, y, dx, dy, false);
       } else {
         map[x][y] = new Mnode(x, y, dx, dy, true);
       }
@@ -177,23 +177,30 @@ void setup() {
   map[13][4].walkable = false;
   /*
   for(int i = 0; i < 24; i++){
-    for(int j = 0; j < 24; j++){
-      int a = (map[i][j].walkable == true) ? 1 : 0;
-      System.out.print(a);
+   for(int j = 0; j < 24; j++){
+   int a = (map[i][j].walkable == true) ? 1 : 0;
+   System.out.print(a);
+   }
+   System.out.println();
+   }*/
+  for (int i = 0; i < map.length; i++) {
+    for (int j = 0; j < map[0].length; j++) {
+      System.out.print(map[i][j]+",");
     }
     System.out.println();
-  }*/
-  
+  }
+
   moves.addLast(map[0][23]);
+  int dx = 0;
+  int dy = 23;
   //System.out.println(map[0][0].row+","+map[0][0].col);
   /*/System.out.println(map[0][0].x+","+map[0][0].y);
-  /Solver a = new Solver(moves.peek(), , map);
-  ArrayDeque<Mnode> lol = a.locations;
-  System.out.println("Begin:");
-  for(Iterator itr = lol.iterator();itr.hasNext();)  {
+   /Solver a = new Solver(moves.peek(), , map);
+   System.out.println("Begin:");
+   for(Iterator itr = lol.iterator();itr.hasNext();)  {
    System.out.println(itr.next()+",");
-  }
-  System.out.println("End!");*/
+   }
+   System.out.println("End!");*/
   /*for (int x = 0; x < 24; x ++){
    for (int y = 0; y < 24; y ++){
    Mnode current = map[x][y];
@@ -225,7 +232,7 @@ void draw() {
   if (moves.size() > 1) {
     moves.removeFirst();
   } else {
-    if (path.locations.size() > 0){
+    if (path.locations.size() > 0) {
       moves = Mnode.calculate(moves.peek(), path.locations.remove(), 4);
     }
   }
@@ -236,22 +243,24 @@ void draw() {
 void mouseClicked() {
   Mnode current = moves.peek();
   //better calcs, might use later. need to discuess
-  int x = dx = ((mouseX - 40) / 41);// + (((mouseX - 40) % 41) / 20);
-  int y = dy = ((mouseY - 50) / 41);// + (((mouseX - 50) % 41) / 20);
-  System.out.println(dx+":"+dy);
+  int x = ((mouseX - 40) / 41);// + (((mouseX - 40) % 41) / 20);
+  int y = ((mouseY - 50) / 41);// + (((mouseX - 50) % 41) / 20);
+  System.out.println(x+":"+y);
   System.out.println(moves.peek());
-  
+
   //if ( (((current.x - 40) / 41) == x) && (((current.y - 40) / 41) == y) ){
   //  moves = Mnode.calculate(moves.peek(), new Mnode(mouseX, mouseY, true), 4);
   //} else {
-    path = new Solver(moves.peek(), map[x][y], map);
-    path.locations.addFirst(moves.peek());
-    System.out.println("Begin:");
-  for(Iterator itr = path.locations.iterator();itr.hasNext();){
+  path = new Solver(moves.peek(), map[x][y], map);
+  path.locations.addFirst(moves.peek());
+  System.out.println("Begin:");
+  for (Iterator itr = path.locations.iterator(); itr.hasNext(); ) {
     Mnode temp = (Mnode)itr.next();
-   System.out.println(temp+":"+temp.x+","+temp.y);
+    System.out.println(temp+":"+temp.x+","+temp.y);
   }
   System.out.println("End!");
+  if (path.locations.size() > 0) {
     moves = Mnode.calculate(moves.peek(), path.locations.remove(), 4);
+  }
   //}
 }
