@@ -14,16 +14,16 @@ void setup() {
   background(loadImage("SmallerMap.jpg"));
   for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
     for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
-      if ((x == 23) || (y == 23) || (x == 0) || (y == 0)) {
-        map[x][y] = new Mnode(x, y, dx, dy, false);
-      } else {
+      //if ((x == 23) || (y == 23) || (x == 0) || (y == 0)) {
+      //  map[x][y] = new Mnode(x, y, dx, dy, false);
+      //} else {
         map[x][y] = new Mnode(x, y, dx, dy, true);
-      }
+      //}
     }
   }
   //hardcode
   //i messed up the coordinates
-  map[2][4].walkable = false;
+  /*map[2][4].walkable = false;
   map[2][5].walkable = false;
   map[2][9].walkable = false;
   map[2][10].walkable = false;
@@ -174,7 +174,7 @@ void setup() {
   map[13][8].walkable = false;
   map[13][7].walkable = false;
   map[13][5].walkable = false;
-  map[13][4].walkable = false;
+  map[13][4].walkable = false;*/
   /*
   for(int i = 0; i < 24; i++){
    for(int j = 0; j < 24; j++){
@@ -231,36 +231,60 @@ void draw() {
   fill(0, 0, 255);
   if (moves.size() > 1) {
     moves.removeFirst();
-  } else {
-    if (path.locations.size() > 0) {
-      moves = Mnode.calculate(moves.peek(), path.locations.remove(), 4);
-    }
   }
   fill(0, 0, 255);
   rect(moves.peek().x - 5, moves.peek().y - 5, 10, 10);
 }
 //SOMETHING HERE
+/*
 void mouseClicked() {
-  Mnode current = moves.peek();
-  //better calcs, might use later. need to discuess
-  int x = ((mouseX - 40) / 41);// + (((mouseX - 40) % 41) / 20);
-  int y = ((mouseY - 50) / 41);// + (((mouseX - 50) % 41) / 20);
-  System.out.println(x+":"+y);
-  System.out.println(moves.peek());
-
-  //if ( (((current.x - 40) / 41) == x) && (((current.y - 40) / 41) == y) ){
-  //  moves = Mnode.calculate(moves.peek(), new Mnode(mouseX, mouseY, true), 4);
-  //} else {
-  path = new Solver(moves.peek(), map[x][y], map);
-  path.locations.addFirst(moves.peek());
-  System.out.println("Begin:");
-  for (Iterator itr = path.locations.iterator(); itr.hasNext(); ) {
-    Mnode temp = (Mnode)itr.next();
-    System.out.println(temp+":"+temp.x+","+temp.y);
+ Mnode current = moves.peek();
+ //better calcs, might use later. need to discuess
+ int x = ((mouseX - 40) / 41);// + (((mouseX - 40) % 41) / 20);
+ int y = ((mouseY - 50) / 41);// + (((mouseX - 50) % 41) / 20);
+ System.out.println(x+":"+y);
+ System.out.println(moves.peek());
+ 
+ //if ( (((current.x - 40) / 41) == x) && (((current.y - 40) / 41) == y) ){
+ //  moves = Mnode.calculate(moves.peek(), new Mnode(mouseX, mouseY, true), 4);
+ //} else {
+ path = new Solver(moves.peek(), map[x][y], map);
+ path.locations.addFirst(moves.peek());
+ System.out.println("Begin:");
+ for (Iterator itr = path.locations.iterator(); itr.hasNext(); ) {
+ Mnode temp = (Mnode)itr.next();
+ System.out.println(temp+":"+temp.x+","+temp.y);
+ }
+ System.out.println("End!");
+ if (path.locations.size() > 0) {
+ moves = Mnode.calculate(moves.peek(), path.locations.remove(), 4);
+ }
+ //}
+ }
+ */
+void keyPressed()
+{
+  try {
+    if (key == CODED)
+    {
+      if (keyCode == LEFT)
+      {
+        if (map[dx][dy-1].walkable == true)    moves = Mnode.calculate(moves.peek(), map[dx][dy-1], 8);
+      }
+      if (keyCode == RIGHT)
+      {
+        if (map[dx][dy+1].walkable == true)     moves = Mnode.calculate(moves.peek(), map[dx][dy+1], 8);
+      }
+      if (keyCode == UP)
+      {
+        if (map[dx+1][dy].walkable == true)    moves = Mnode.calculate(moves.peek(), map[dx+1][dy], 8);
+      }
+      if (keyCode == DOWN)
+      {
+        if (map[dx-1][dy].walkable == true)     moves = Mnode.calculate(moves.peek(), map[dx-1][dy], 8);
+      }
+    }
   }
-  System.out.println("End!");
-  if (path.locations.size() > 0) {
-    moves = Mnode.calculate(moves.peek(), path.locations.remove(), 4);
+  catch(IndexOutOfBoundsException e) {
   }
-  //}
 }
