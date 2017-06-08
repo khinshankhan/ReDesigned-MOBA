@@ -233,7 +233,7 @@ void setup() {
   for(int dax = 0; dax < 24; dax++){
     for(int dyx = 0; dyx < 24; dyx++){
       if (!(map[dax][dyx].walkable)){
-        map[dax][dyx].stepped = true;
+        map[dax][dyx].stepped = map[dax][dyx].occupado = true;
         left -= 1;
       }
     }
