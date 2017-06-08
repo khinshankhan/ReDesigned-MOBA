@@ -1,24 +1,26 @@
 import java.util.ArrayDeque;
 
-public class Mnode implements Comparable<Mnode> {
+public class Mnode{
 
   public int x;
   public int y;
-  public int z;
+  //public int z;
   public int row;
   public int col;
   public boolean walkable;
-  public int distToStart, distToGoal; //Manhattan distance?
-  public Mnode previous; //connect it
-  public boolean aStar; //type of algorithm
-  public int priority; //smart priority
-  public boolean walk;
+  //public int distToStart, distToGoal; //Manhattan distance?
+  //public Mnode previous; //connect it
+  //public boolean aStar; //type of algorithm
+  //public int priority; //smart priority
+  //public boolean walk;
+  public boolean stepped;
 
   public Mnode(int dx, int dy, boolean clear) {
     x = dx;
     y = dy;
-    z = x *-1 -y;
-    walkable = walk = clear;
+    //z = x *-1 -y;
+    walkable = clear;
+    stepped = !(clear);
   }
 
   public Mnode(int r, int c, int dx, int dy, boolean clear) {
@@ -26,53 +28,55 @@ public class Mnode implements Comparable<Mnode> {
     col = c;
     x = dx;
     y = dy;
-    z = x *-1 -y;
-    walkable = walk = clear;
+    //z = x *-1 -y;
+    walkable = clear;
+    stepped = !(clear);
   }
 
-  public Mnode(int r, int c, Mnode previous, int distToStart, int distToGoal) {
-    row = r;
-    col = c;
-    this.previous = previous;
-    this.distToStart = distToStart;
-    this.distToGoal = distToGoal;
-    priority = 0;
-  }
+//  public Mnode(int r, int c, Mnode previous, int distToStart, int distToGoal) {
+//    row = r;
+//    col = c;
+//    this.previous = previous;
+//    this.distToStart = distToStart;
+//    this.distToGoal = distToGoal;
+//    priority = 0;
+//  }
 
-  public Mnode(int r, int c, Mnode previous, int distToStart, int distToGoal, boolean aStar) {
-    this(r, c, previous, distToStart, distToGoal);
-    this.aStar=aStar;
-    priority=(!aStar)? distToGoal: distToStart+distToGoal;
-  }
+//  public Mnode(int r, int c, Mnode previous, int distToStart, int distToGoal, boolean aStar) {
+//    this(r, c, previous, distToStart, distToGoal);
+//    this.aStar=aStar;
+//    priority=(!aStar)? distToGoal: distToStart+distToGoal;
+//  }
 
-  public int compareTo(Mnode other) {
-    return priority - other.priority();
-  }
+//  public int compareTo(Mnode other) {
+//    return priority - other.priority();
+//  }
 
-  public int distToStart() {
-    return distToGoal;
-  }
-  public int distToGoal() {
-    return distToGoal;
-  }
-  public int priority() {
-    return priority;
-  }
-  public Mnode previous() {
-    return previous;
-  }
+//  public int distToStart() {
+//    return distToGoal;
+//  }
+//  public int distToGoal() {
+//    return distToGoal;
+//  }
+//  public int priority() {
+//    return priority;
+//  }
+//  public Mnode previous() {
+//    return previous;
+//  }
 
   public String toString() {
     //return "("+x+","+y+")";
     return "("+row+","+col+")";
   }
 
-  public static double max(double x, double y) {
-    return Math.max(x, y);
-  }
-  public static double max(double x, double y, double z) {
-    return Math.max(Math.max(x, y), Math.max(y, z));
-  }
+//  public static double max(double x, double y) {
+//    return Math.max(x, y);
+//  }
+//  public static double max(double x, double y, double z) {
+//    return Math.max(Math.max(x, y), Math.max(y, z));
+//  }
+
   public static ArrayDeque<Mnode> calculate(Mnode s, Mnode e, int spd) {
     ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
     double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));
