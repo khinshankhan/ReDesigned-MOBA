@@ -10,7 +10,7 @@ public class Mnode{
   public boolean occupado;
   public boolean stepped;
 
-  public Mnode(int dx, int dy, boolean clear, boolean) {
+  public Mnode(int dx, int dy, boolean clear) {
     x = dx;
     y = dy;
     walkable = clear;

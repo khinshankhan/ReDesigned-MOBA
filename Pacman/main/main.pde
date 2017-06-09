@@ -3,8 +3,23 @@ import java.util.ArrayDeque;
 Mnode[][] map;
 ArrayDeque<Mnode> moves;
 int dx, dy, d, animer, way, left;
-
+Ghost red;
+Ghost yellow;
+Ghost blue;
+Ghost pink;
 void setup() {
+  red = new Ghost("red");
+  red.x = 450;
+  red.y = 550;
+  yellow = new Ghost("yellow");
+  yellow.x = 525;
+  yellow.y = 550;
+  blue = new Ghost("blue");
+  blue.x = 575;
+  blue.y = 550;
+  pink = new Ghost("pink");
+  pink.x = 525;
+  pink.y = 490;
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
@@ -230,9 +245,9 @@ void setup() {
   map[12][5].walkable = false;
   map[12][13].walkable = false;
   map[12][18].walkable = false;
-  for(int dax = 0; dax < 24; dax++){
-    for(int dyx = 0; dyx < 24; dyx++){
-      if (!(map[dax][dyx].walkable)){
+  for (int dax = 0; dax < 24; dax++) {
+    for (int dyx = 0; dyx < 24; dyx++) {
+      if (!(map[dax][dyx].walkable)) {
         map[dax][dyx].stepped = map[dax][dyx].occupado = true;
         left -= 1;
       }
@@ -249,6 +264,10 @@ void setup() {
 
 void draw() {
   background(loadImage("SmallerMap.jpg"));
+  red.display();
+  yellow.display();
+  blue.display();
+  pink.display();
   if (moves.size() > 1) {
     moves.removeFirst();
   } else {
@@ -291,19 +310,22 @@ void draw() {
         d = 0;
       }
     }
-    if (map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped == false){
+    if (map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped == false) {
       map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped = true;
       left -= 1;
     }
     if (animer == 0) {
+      imageMode(CENTER);
       ellipse(moves.peek().x, moves.peek().y, 40, 40);
     } else {
       if ( d == 0) {
         PImage pac = loadImage(animer + ".png");
-        image(pac, moves.peek().x - 20, moves.peek().y - 20);
+        image(pac, moves.peek().x, moves.peek().y);
+        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
       } else {
         PImage pac = loadImage(animer + (12 * (d - 1)) + ".png");
-        image(pac, moves.peek().x - 20, moves.peek().y - 20);
+        image(pac, moves.peek().x, moves.peek().y);
+        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
       }
     }
     if (animer == 0) {
@@ -326,10 +348,10 @@ void draw() {
         fill(255, 255, 255);
         rect(cur.x - 5, cur.y - 5, 10, 10);
       }
-      fill(255,255,0);
+      fill(255, 255, 0);
     }
   }
-  if (left == 0){
+  if (left == 0) {
     clear();
   }
 }
