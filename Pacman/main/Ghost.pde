@@ -53,6 +53,7 @@ class Ghost {
     edible = false;
     tint(0, 153, 204);  // Tint blue
     image(img, x, y, img.width * .4, img.height * .4);
+    noTint();
   }
 
   // public Mnode nextSpot(){
