@@ -85,6 +85,11 @@ class Ghost {
     image(img, x, y, img.width * .4, img.height * .4);
     noTint();
   }
+  void unscared() {
+    edible = true;
+    noTint();
+    image(img, x, y, img.width * .4, img.height * .4);
+  }
 
   // public Mnode nextSpot(){
   //decide where to go for the next spot, so that in the main.pde file, you can be like if [ghost].moves.size() == 1, [ghost].moves = calculate([ghost].moves.peek(), [ghost].next(), 6)

@@ -3,10 +3,12 @@ import java.util.ArrayDeque;
 Mnode[][] map;
 ArrayDeque<Mnode> moves;
 int dx, dy, d, animer, way, left;
+int score;
 Ghost red;
 Ghost yellow;
 Ghost blue;
 Ghost pink;
+PImage img;
 
 //THIS IS THE "BOOLEAN" FOR BEING POWERED UP!!!
 //I made it
@@ -17,8 +19,11 @@ void setup() {
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
-  size(1024, 1024);
-  background(loadImage("SmallerMap.jpg"));
+  //size(1024, 1024);
+  //background(loadImage("SmallerMap.jpg"));
+  size(1200, 1024);
+  img = loadImage("Map.jpg");
+  background(img);
   for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
     for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
       map[x][y] = new Mnode(x, y, dx, dy, true);
@@ -272,7 +277,25 @@ void draw() {
     int say = (int)(24 * Math.random());
     map[sax][say].has = new PowerUp(map[sax][say], sax, say);
   }
-  background(loadImage("SmallerMap.jpg"));
+  //background(loadImage("SmallerMap.jpg"));
+  background(loadImage("Map.jpg"));
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textSize(30);
+  text("" + score, 1100, 40);
+  
+  if(reallyobvious != 0){
+    red.scared();
+    yellow.scared();
+    blue.scared();
+    pink.scared();
+  }
+  if(reallyobvious != 0){
+    red.unscared();
+    yellow.unscared();
+    blue.unscared();
+    pink.unscared();
+  }
   red.display();
   yellow.display();
   blue.display();
@@ -377,6 +400,7 @@ void draw() {
 }
 
 void keyPressed() {
+  println(mouseX +"," + mouseY);
   if (key == CODED) {
     if (keyCode == LEFT) {
       d = 4;
