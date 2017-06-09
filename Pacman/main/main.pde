@@ -14,18 +14,6 @@ int reallyobvious;
 // totally feel free to change it
 
 void setup() {
-  red = new Ghost("red");
-  red.x = 450;
-  red.y = 550;
-  yellow = new Ghost("yellow");
-  yellow.x = 525;
-  yellow.y = 550;
-  blue = new Ghost("blue");
-  blue.x = 575;
-  blue.y = 550;
-  pink = new Ghost("pink");
-  pink.x = 525;
-  pink.y = 490;
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
@@ -268,6 +256,14 @@ void setup() {
   fill(255,255,255);
   map[0][23].has = new PowerUp(map[0][23], 0, 23);
   fill(255, 255, 0);
+  red = new Ghost("red");
+  red.start(map[10][12]);
+  yellow = new Ghost("yellow");
+  yellow.start(map[11][12]);
+  blue = new Ghost("blue");
+  blue.start(map[12][12]);
+  pink = new Ghost("pink");
+  pink.start(map[13][12]);
 }
 
 void draw() {
