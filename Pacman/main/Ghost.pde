@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Random;
 class Ghost {
 
   PImage img;
@@ -8,9 +9,12 @@ class Ghost {
   public boolean edible;
   public String which;
   public int[][] possible = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+  public int time;
 
   public Ghost(String shade) {
     img = loadImage(shade+".png"); //(shade+".gif");
+    moves = new ArrayDeque<Mnode>();
+    time = 0;
   }
 
   public Ghost(String shade, Mnode start, String name) {
@@ -21,32 +25,58 @@ class Ghost {
     moves.addFirst(start);
     which = name;
   }
+
+  void start(Mnode first) {
+    moves.add(first);
+  }
+
   void display() {
     //stroke(0);
+    if (moves.size() > 1) {
+      moves.removeFirst();
+    } 
+    x = moves.peek().row;
+    y = moves.peek().col;
     if (!edible) {
       imageMode(CENTER);
-      image(img, x, y, img.width * .4, img.height * .4);
+      image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
     } else {
       scared();
     }
+    if (time%10 == 0) {
+      update();
+    }
+    time++;
   }
+  
   void update() {
+    ArrayList<int[]> list = new ArrayList<int[]>();
     boolean tried = true;
-    for (int[] move : possible) {
-      if (tried) {
-        try {
-          int r = x + move[0];
-          int c = y + move[1];
-          if (map[r][c].walkable == true) {
-            tried = false;
-            moves = Mnode.calculate(moves.peek(), map[r][c], 6);
-          }
-        }
-        catch (IndexOutOfBoundsException e) {
-          tried = true;
+    Random rnd = new Random();
+    int randomNumberFromArray = rnd.nextInt(4);
+    while (tried) {
+      int rand = rnd.nextInt(4);
+      int [] move = new int[2];
+      move = possible[rand];
+      try {
+        //System.out.println(moves.peek().row+":"+moves.peek().col);
+        int r = moves.peek().row + move[0];
+        int c = moves.peek().col + move[1];
+        if (map[r][c].walkable == true) {
+          tried = false;
+          moves = Mnode.calculate(moves.peek(), map[r][c], 6);
+          //System.out.println(moves.size());
+          //System.out.println(moves.peek());
+        } else {
+          throw new IndexOutOfBoundsException();
         }
       }
+      catch (IndexOutOfBoundsException e) {
+        //System.out.println("ERROR");
+        tried = true;
+      }
     }
+    //System.out.println("MOVE: "+moves.peek());
   }
 
   void scared() {

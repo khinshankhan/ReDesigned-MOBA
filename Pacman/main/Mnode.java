@@ -30,6 +30,10 @@ public class Mnode{
     //return "("+x+","+y+")";
     return "("+row+","+col+")";
   }
+  public String coor() {
+    //return "("+x+","+y+")";
+    return "("+x+","+y+")";
+  }
 
   public static ArrayDeque<Mnode> calculate(Mnode s, Mnode e, int spd) {
     ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
