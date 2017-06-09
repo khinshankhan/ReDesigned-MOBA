@@ -9,12 +9,14 @@ public class Mnode{
   public boolean walkable;
   public boolean occupado;
   public boolean stepped;
+  public PowerUp has;
 
   public Mnode(int dx, int dy, boolean clear) {
     x = dx;
     y = dy;
     walkable = clear;
     stepped = occupado = !(clear);
+    has = null;
   }
 
   public Mnode(int r, int c, int dx, int dy, boolean clear) {
@@ -24,6 +26,7 @@ public class Mnode{
     y = dy;
     walkable = clear;
     stepped = occupado = !(clear);
+    has = null;
   }
   
   public String toString() {

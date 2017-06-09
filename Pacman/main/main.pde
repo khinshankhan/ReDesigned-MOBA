@@ -7,6 +7,12 @@ Ghost red;
 Ghost yellow;
 Ghost blue;
 Ghost pink;
+
+//THIS IS THE "BOOLEAN" FOR BEING POWERED UP!!!
+//I made it
+int reallyobvious;
+// totally feel free to change it
+
 void setup() {
   red = new Ghost("red");
   red.x = 450;
@@ -259,10 +265,17 @@ void setup() {
   d = 0;
   animer = 0;
   way = 1;
+  fill(255,255,255);
+  map[0][23].has = new PowerUp(map[0][23], 0, 23);
   fill(255, 255, 0);
 }
 
 void draw() {
+  if ((int)(Math.random() * 2000) == 42){
+    int sax = (int)(24 * Math.random());
+    int say = (int)(24 * Math.random());
+    map[sax][say].has = new PowerUp(map[sax][say], sax, say);
+  }
   background(loadImage("SmallerMap.jpg"));
   red.display();
   yellow.display();
@@ -310,9 +323,17 @@ void draw() {
         d = 0;
       }
     }
-    if (map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped == false) {
+    if (!(map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped)) {
       map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped = true;
       left -= 1;
+    }
+    if (null != map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has) {
+      reallyobvious = 101;
+      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has = null;
+    }
+    if (reallyobvious > 0){
+      reallyobvious -= 1;
+      System.out.println(reallyobvious);
     }
     if (animer == 0) {
       imageMode(CENTER);
@@ -343,10 +364,13 @@ void draw() {
   for (int x = 0; x < 24; x ++) {
     for (int y = 0; y < 24; y ++) {
       Mnode cur = map[x][y];
+      fill(255, 255, 255);
       if (cur.stepped) {
       } else {
-        fill(255, 255, 255);
         rect(cur.x - 5, cur.y - 5, 10, 10);
+      }
+      if (null != cur.has){
+        ellipse(cur.x, cur.y, 21, 21);
       }
       fill(255, 255, 0);
     }
