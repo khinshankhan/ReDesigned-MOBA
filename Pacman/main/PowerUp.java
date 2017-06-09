@@ -1,7 +1,8 @@
 public class PowerUp{
 
     public Mnode spot;
-    public int r, c;
+    public int r;
+    public int c;
 
     public PowerUp(Mnode home, int row, int col){
 	spot = home;
