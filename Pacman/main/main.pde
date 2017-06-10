@@ -1,33 +1,33 @@
-import java.util.ArrayDeque;
 import java.util.*;
 
-Mnode[][] map;
-ArrayDeque<Mnode> moves;
-int dx, dy, d, animer, way, left;
-int score;
-Ghost red;
-Ghost yellow;
-Ghost blue;
-Ghost pink;
-PImage img;
-ArrayList<PImage> pacmenList;
-int [][] ghostPositions;
-int time;
-int speed;
-int lives;
-int screen;
-//THIS IS THE "BOOLEAN" FOR BEING POWERED UP!!!
-//I made it
-int reallyobvious;
-// totally feel free to change it
-boolean change;
+public PImage img;
+public Mnode[][] map;
+public ArrayDeque<Mnode> moves;
+public ArrayList<PImage> pacmenList;
+
+public Ghost red;
+public Ghost yellow;
+public Ghost blue;
+public Ghost pink;
+
+public int dx;
+public int dy;
+public int d;
+public int way;
+public int left;
+public int animer;
+public int score;
+public int time;
+public int speed;
+public int lives;
+public int screen;
+public int reallyobvious;
 
 void setup() {
-  change = false;
   screen = 0;
   speed = 4;
   lives = 3;
-  ghostPositions = new int[4][2];
+  score = 0;
   pacmenList = new ArrayList<PImage>();
   for (int i = 0; i < 49; i++) {
     PImage temp = loadImage(i + ".png");
@@ -36,8 +36,6 @@ void setup() {
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
-  //size(1024, 1024);
-  //background(loadImage("SmallerMap.jpg"));
   size(1200, 1024);
   img = loadImage("Map.jpg");
   background(img);
@@ -61,23 +59,18 @@ void draw() {
   if (screen == 0) {
     gameplay();
   } else {
+    setup();
+    screen++;
     gameover();
-    lives = 3;
-    moves = new ArrayDeque<Mnode>();
-    moves.addLast(map[0][0]);
-    moves.addLast(map[0][0]);
-    dx = 0;
-    dy = 0;
-    d = 0;
-    animer = 0;
-    way = 1;
+    //pacReset();
+    //ghostReset();
+    //lives = 3;
   }
   time++;
 }
 
 void gameplay() {
 
-  change = false;
   imageMode(CENTER);
 
   if (moves.size() > 0 && red.moves.size() > 1 && yellow.moves.size() > 1 && blue.moves.size() > 1 && pink.moves.size() > 1) {
@@ -303,9 +296,6 @@ void gameover() {
   text("GAME OVER", img.width/2, img.height/2);
   textSize(100);
   text("CLICK TO CONTINUE", img.width/2, img.height - img.height/4);
-  if (change) {
-    screen--;
-  }
 }
 
 int contained(ArrayList<Mnode> a, Mnode x) {
@@ -403,7 +393,9 @@ void keyPressed() {
 }
 
 void mousePressed() {
-  change = true;
+  if (screen == 1) {
+    screen--;
+  }
 }
 
 void mapping() {
