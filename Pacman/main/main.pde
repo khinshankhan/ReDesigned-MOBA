@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.*;
 
 Mnode[][] map;
 ArrayDeque<Mnode> moves;
@@ -9,6 +10,10 @@ Ghost yellow;
 Ghost blue;
 Ghost pink;
 PImage img;
+ArrayList<PImage> list;
+int [][] ghostPositions;
+int time;
+//boolean inBox, changeNeeded;
 
 //THIS IS THE "BOOLEAN" FOR BEING POWERED UP!!!
 //I made it
@@ -16,6 +21,9 @@ int reallyobvious;
 // totally feel free to change it
 
 void setup() {
+  //inBox = changeNeeded = true;
+  ghostPositions = new int[4][2];
+  list = new ArrayList<PImage>();
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
@@ -244,6 +252,12 @@ void setup() {
   map[12][5].walkable = false;
   map[12][13].walkable = false;
   map[12][18].walkable = false;
+  map[10][12].walkable = false;
+  map[11][12].walkable = false;
+  map[12][12].walkable = false;
+  map[13][12].walkable = false;
+  map[10][11].walkable = false;
+  map[13][11].walkable = false;
   for (int dax = 0; dax < 24; dax++) {
     for (int dyx = 0; dyx < 24; dyx++) {
       if (!(map[dax][dyx].walkable)) {
@@ -258,21 +272,53 @@ void setup() {
   d = 0;
   animer = 0;
   way = 1;
-  fill(255,255,255);
+  fill(255, 255, 255);
   map[0][23].has = new PowerUp(map[0][23], 0, 23);
   fill(255, 255, 0);
   red = new Ghost("red");
-  red.start(map[10][12]);
+  red.start(map[10][11]);
   yellow = new Ghost("yellow");
-  yellow.start(map[11][12]);
+  yellow.start(map[11][11]);
   blue = new Ghost("blue");
-  blue.start(map[12][12]);
+  blue.start(map[12][11]);
   pink = new Ghost("pink");
-  pink.start(map[13][12]);
+  pink.start(map[13][11]);
 }
 
 void draw() {
-  if ((int)(Math.random() * 2000) == 42){
+  /*
+  if (inBox) {
+   ghostPositions[0][0] = red.moves.peek().row; 
+   ghostPositions[0][1] = red.moves.peek().col;
+   ghostPositions[1][0] = yellow.moves.peek().row;
+   ghostPositions[1][1] = yellow.moves.peek().col;
+   ghostPositions[2][0] = blue.moves.peek().row;
+   ghostPositions[2][1] = blue.moves.peek().col;
+   ghostPositions[3][0] = pink.moves.peek().row;
+   ghostPositions[3][1] = pink.moves.peek().col;
+   int [][] exitpos = { {map[11][11].row, map[11][11].col}, {map[12][11].row, map[12][11].col} };
+   //if (Arrays.asList(ghostPositions).contains(exitpos[0]) || Arrays.asList(ghostPositions).contains(exitpos[1]))
+   if (!contained(ghostPositions, exitpos[0]) && !contained(ghostPositions, exitpos[1])) {
+   System.out.println("JAHDJSJS");
+   inBox = false;
+   }
+   if (!inBox && changeNeeded) {
+   map[11][11].walkable = false;
+   map[12][11].walkable = false;
+   changeNeeded = false;
+   }
+   }
+   */
+  if (time/100 == 1) {
+    System.out.println("JAHDJSJS");
+    map[11][11].walkable = false;
+    map[12][11].walkable = false;
+  }
+  if(time/125 == 1){
+    map[11][10].walkable = false;
+    map[12][10].walkable = false;
+  }
+  if ((int)(Math.random() * 2000) == 42) {
     int sax = (int)(24 * Math.random());
     int say = (int)(24 * Math.random());
     map[sax][say].has = new PowerUp(map[sax][say], sax, say);
@@ -283,14 +329,14 @@ void draw() {
   textAlign(CENTER);
   textSize(30);
   text("" + score, 1100, 40);
-  
-  if(reallyobvious != 0){
+
+  if (reallyobvious != 0) {
     red.scared();
     yellow.scared();
     blue.scared();
     pink.scared();
   }
-  if(reallyobvious != 0){
+  if (reallyobvious != 0) {
     red.unscared();
     yellow.unscared();
     blue.unscared();
@@ -350,7 +396,7 @@ void draw() {
       reallyobvious = 101;
       map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has = null;
     }
-    if (reallyobvious > 0){
+    if (reallyobvious > 0) {
       reallyobvious -= 1;
       System.out.println(reallyobvious);
     }
@@ -388,7 +434,7 @@ void draw() {
       } else {
         rect(cur.x - 5, cur.y - 5, 10, 10);
       }
-      if (null != cur.has){
+      if (null != cur.has) {
         ellipse(cur.x, cur.y, 21, 21);
       }
       fill(255, 255, 0);
@@ -397,8 +443,13 @@ void draw() {
   if (left == 0) {
     clear();
   }
+  time++;
 }
-
+/*
+public static boolean contained(int [][] key, int [] check) {
+ return Arrays.asList(key).containsAll(Arrays.asList(check));
+ }
+ */
 void keyPressed() {
   println(mouseX +"," + mouseY);
   if (key == CODED) {
