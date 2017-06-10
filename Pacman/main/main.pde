@@ -50,23 +50,11 @@ void setup() {
 
   mapping();
 
-  moves.addLast(map[0][0]);
-  dx = 0;
-  dy = 0;
-  d = 0;
-  animer = 0;
-  way = 1;
+  pacReset();
   fill(255, 255, 255);
   map[0][23].has = new PowerUp(map[0][23], 0, 23);
   fill(255, 255, 0);
-  red = new Ghost("red");
-  red.start(map[10][11]);
-  yellow = new Ghost("yellow");
-  yellow.start(map[11][11]);
-  blue = new Ghost("blue");
-  blue.start(map[12][11]);
-  pink = new Ghost("pink");
-  pink.start(map[13][11]);
+  ghostReset();
 }
 
 void draw() {
@@ -92,19 +80,61 @@ void gameplay() {
   change = false;
   imageMode(CENTER);
 
-  ArrayList<Mnode> positions = new ArrayList<Mnode>();
-  positions.add(red.moves.peek());
-  positions.add(yellow.moves.peek());
-  positions.add(blue.moves.peek());
-  positions.add(pink.moves.peek());
-  delay(10);
-  if (contained(positions, moves.peek())) {
-    lives--;
+  if (moves.size() > 0 && red.moves.size() > 1 && yellow.moves.size() > 1 && blue.moves.size() > 1 && pink.moves.size() > 1) {
+    ArrayList<Mnode> positions = new ArrayList<Mnode>();
+    positions.add(red.moves.peek());
+    positions.add(yellow.moves.peek());
+    positions.add(blue.moves.peek());
+    positions.add(pink.moves.peek());
+    delay(13);
+    switch (contained(positions, moves.peek())) {
+    case 0: 
+      if (red.edible == false) {
+        ghostReset("red");
+        score += 500;
+      } else {
+        lives--;
+        pacReset();
+        ghostReset();
+      }
+      break;
+    case 1: 
+      if (yellow.edible == false) {
+        ghostReset("yellow");
+        score += 500;
+      } else {
+        lives--;
+        pacReset();
+        ghostReset();
+      }
+      break;
+    case 2: 
+      if (blue.edible == false) {
+        ghostReset("blue");
+        score += 500;
+      } else {
+        lives--;
+        pacReset();
+        ghostReset();
+      }
+      break;
+    case 3: 
+      if (pink.edible == false) {
+        ghostReset("pink");
+        score += 500;
+      } else {
+        lives--;
+        pacReset();
+        ghostReset();
+      }
+      break;
+    default: 
+      //System.out.println( "DEBUG");
+    }
   }
 
   if (time != 0) {
     if (time%200 == 0) {
-      //System.out.println("lokmnhg");
       map[11][11].walkable = false;
       map[12][11].walkable = false;
     }
@@ -133,19 +163,20 @@ void gameplay() {
   for (int i = 0, posi = 1075; i < lives; i++, posi += 50) {
     image(pacmenList.get(23), posi, 250);
   }
+  System.out.println(reallyobvious);
 
   if (reallyobvious != 0) {
-    red.scared();
-    yellow.scared();
-    blue.scared();
-    pink.scared();
+    red.edible = false;
+    yellow.edible = false;
+    blue.edible = false;
+    pink.edible = false;
   }
 
-  if (reallyobvious != 0) {
-    red.unscared();
-    yellow.unscared();
-    blue.unscared();
-    pink.unscared();
+  if (reallyobvious == 0) {
+    red.edible = true;
+    yellow.edible = true;
+    blue.edible = true;
+    pink.edible = true;
   }
 
   red.display();
@@ -270,22 +301,87 @@ void gameover() {
   textAlign(CENTER);
   textSize(200);
   text("GAME OVER", img.width/2, img.height/2);
+  textSize(100);
+  text("CLICK TO CONTINUE", img.width/2, img.height - img.height/4);
   if (change) {
     screen--;
   }
 }
 
-boolean contained(ArrayList<Mnode> a, Mnode x) {
+int contained(ArrayList<Mnode> a, Mnode x) {
   for (int i = 0; i < a.size(); i++) {
-    if (compare(a.get(i), x) == 0) {
-      return true;
+    if (compare(a.get(i), x) < 50) {
+      return i;
     }
   }
-  return false;
+  return -1;
 }
 
 int compare(Mnode first, Mnode other) {
   return first.compareTo(other);
+}
+
+void pacReset() {
+  moves = new ArrayDeque<Mnode>();
+  moves.addLast(map[0][0]);
+  moves.addLast(map[0][0]);
+  dx = 0;
+  dy = 0;
+  d = 0;
+  animer = 0;
+  way = 1;
+}
+
+void ghostReset() {
+  red = new Ghost("red");
+  red.start(map[10][11]);
+  yellow = new Ghost("yellow");
+  yellow.start(map[11][11]);
+  blue = new Ghost("blue");
+  blue.start(map[12][11]);
+  pink = new Ghost("pink");
+  pink.start(map[13][11]);
+
+  //retrue
+  map[11][10].walkable = true;
+  map[12][10].walkable = true;
+  map[11][11].walkable = true;
+  map[12][11].walkable = true;
+  ghostReset("red");
+  ghostReset("yellow");
+  ghostReset("blue");
+  ghostReset("pink");
+}
+
+void ghostReset(String name) {
+
+  switch (name) {
+  case "red": 
+    red = new Ghost("red");
+    red.start(map[10][11]);
+    break;
+  case "yellow": 
+    yellow = new Ghost("yellow");
+    yellow.start(map[11][11]);
+    break;
+  case "blue": 
+    blue = new Ghost("blue");
+    blue.start(map[12][11]);
+    break;
+  case "pink": 
+    pink = new Ghost("pink");
+    pink.start(map[13][11]);
+    break;
+  default: 
+    //System.out.println( "INVALID. CURRENTLY THERE ARE ONLY:\n * + - / %");
+  }
+
+  //retrue
+  map[11][10].walkable = true;
+  map[12][10].walkable = true;
+  map[11][11].walkable = true;
+  map[12][11].walkable = true;
+  time = 0;
 }
 
 void keyPressed() {
@@ -545,10 +641,4 @@ void mapping() {
       }
     }
   }
-
-  //retrue
-  map[11][10].walkable = true;
-  map[12][10].walkable = true;
-  map[11][11].walkable = true;
-  map[12][11].walkable = true;
 }

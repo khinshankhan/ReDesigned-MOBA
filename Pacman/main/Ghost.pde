@@ -11,21 +11,22 @@ class Ghost {
   public int[][] possible = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
   public int time;
   public int speed;
+  Mnode pos;
 
   public Ghost(String shade) {
     img = loadImage(shade+".png"); //(shade+".gif");
+    shade = which;
     moves = new ArrayDeque<Mnode>();
     time = 0;
     speed = 4;
+    edible = false;
   }
 
-  public Ghost(String shade, Mnode start, String name) {
+  public Ghost(String shade, Mnode start) {
     this(shade);
-    //x = start.dx;
-    //y = start.dy;
     moves = new ArrayDeque<Mnode>();
     moves.addFirst(start);
-    which = name;
+    //which = name;
   }
 
   void start(Mnode first) {
@@ -33,17 +34,15 @@ class Ghost {
   }
 
   void display() {
-    //stroke(0);
     if (moves.size() > 1) {
-      moves.removeFirst();
+      pos = moves.removeFirst();
     } 
     x = moves.peek().row;
     y = moves.peek().col;
-    if (!edible) {
+    if (edible) {
       imageMode(CENTER);
       image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
     } else {
-      scared();
       tint(0, 153, 204);  // Tint blue
       image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
       noTint();
@@ -70,25 +69,14 @@ class Ghost {
         if (map[r][c].walkable == true) {
           tried = false;
           moves = Mnode.calculate(moves.peek(), map[r][c], speed);
-          //System.out.println(moves.size());
-          //System.out.println(moves.peek());
         } else {
           throw new IndexOutOfBoundsException();
         }
       }
       catch (IndexOutOfBoundsException e) {
-        //System.out.println("ERROR");
         tried = true;
       }
     }
-    //System.out.println("MOVE: "+moves.peek());
-  }
-
-  void scared() {
-    edible = false;
-  }
-  void unscared() {
-    edible = true;
   }
 
   // public Mnode nextSpot(){

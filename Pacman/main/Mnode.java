@@ -26,7 +26,7 @@ public class Mnode implements Comparable<Mnode> {
   }
 
   public int compareTo(Mnode o) {
-    return Math.abs(x - o.x) + Math.abs(y - o.y) + Math.abs(row - o.row) + Math.abs(col - o.col);
+    return Math.abs(x - o.x) + Math.abs(y - o.y);
   }
 
   public String toString() {
