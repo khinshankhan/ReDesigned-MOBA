@@ -10,20 +10,29 @@ Ghost yellow;
 Ghost blue;
 Ghost pink;
 PImage img;
-ArrayList<PImage> list;
+ArrayList<PImage> pacmenList;
 int [][] ghostPositions;
 int time;
-//boolean inBox, changeNeeded;
-
+int speed;
+int lives;
+int screen;
 //THIS IS THE "BOOLEAN" FOR BEING POWERED UP!!!
 //I made it
 int reallyobvious;
 // totally feel free to change it
+boolean change;
 
 void setup() {
-  //inBox = changeNeeded = true;
+  change = false;
+  screen = 0;
+  speed = 4;
+  lives = 3;
   ghostPositions = new int[4][2];
-  list = new ArrayList<PImage>();
+  pacmenList = new ArrayList<PImage>();
+  for (int i = 0; i < 49; i++) {
+    PImage temp = loadImage(i + ".png");
+    pacmenList.add(temp);
+  }
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
@@ -38,6 +47,270 @@ void setup() {
       left += 1;
     }
   }
+
+  mapping();
+
+  moves.addLast(map[0][0]);
+  dx = 0;
+  dy = 0;
+  d = 0;
+  animer = 0;
+  way = 1;
+  fill(255, 255, 255);
+  map[0][23].has = new PowerUp(map[0][23], 0, 23);
+  fill(255, 255, 0);
+  red = new Ghost("red");
+  red.start(map[10][11]);
+  yellow = new Ghost("yellow");
+  yellow.start(map[11][11]);
+  blue = new Ghost("blue");
+  blue.start(map[12][11]);
+  pink = new Ghost("pink");
+  pink.start(map[13][11]);
+}
+
+void draw() {
+  if (screen == 0) {
+    gameplay();
+  } else {
+    gameover();
+    lives = 3;
+    moves = new ArrayDeque<Mnode>();
+    moves.addLast(map[0][0]);
+    moves.addLast(map[0][0]);
+    dx = 0;
+    dy = 0;
+    d = 0;
+    animer = 0;
+    way = 1;
+  }
+  time++;
+}
+
+void gameplay() {
+
+  change = false;
+  imageMode(CENTER);
+
+  ArrayList<Mnode> positions = new ArrayList<Mnode>();
+  positions.add(red.moves.peek());
+  positions.add(yellow.moves.peek());
+  positions.add(blue.moves.peek());
+  positions.add(pink.moves.peek());
+  delay(10);
+  if (contained(positions, moves.peek())) {
+    lives--;
+  }
+
+  if (time != 0) {
+    if (time%200 == 0) {
+      //System.out.println("lokmnhg");
+      map[11][11].walkable = false;
+      map[12][11].walkable = false;
+    }
+    if (time%300 == 0) {
+      map[11][10].walkable = false;
+      map[12][10].walkable = false;
+    }
+  }
+
+  if ((int)(Math.random() * 2000) == 42) {
+    int sax = (int)(24 * Math.random());
+    int say = (int)(24 * Math.random());
+    map[sax][say].has = new PowerUp(map[sax][say], sax, say);
+  }
+
+  //cause lag?
+  //background(loadImage("Map.jpg"));
+  background(img);
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textSize(30);
+  text("SCORE", 1125, 70);
+  text("" + score, 1125, 120);
+  text("LIVES", 1125, 170);
+
+  for (int i = 0, posi = 1075; i < lives; i++, posi += 50) {
+    image(pacmenList.get(23), posi, 250);
+  }
+
+  if (reallyobvious != 0) {
+    red.scared();
+    yellow.scared();
+    blue.scared();
+    pink.scared();
+  }
+
+  if (reallyobvious != 0) {
+    red.unscared();
+    yellow.unscared();
+    blue.unscared();
+    pink.unscared();
+  }
+
+  red.display();
+  yellow.display();
+  blue.display();
+  pink.display();
+
+  if (moves.size() > 1) {
+    moves.removeFirst();
+  } else {
+    if (d != 0) {
+      try {
+        if (d == 1) {
+          if (map[dx][dy - 1].walkable) {
+            moves = Mnode.calculate(moves.peek(), map[dx][dy - 1], speed);
+            dy -= 1;
+          } else {
+            d = 0;
+          }
+        }
+        if (d == 2) {
+          if (map[dx + 1][dy].walkable) {
+            moves = Mnode.calculate(moves.peek(), map[dx + 1][dy], speed);
+            dx += 1;
+          } else {
+            d = 0;
+          }
+        }
+        if (d == 3) {
+          if (map[dx][dy + 1].walkable) {
+            moves = Mnode.calculate(moves.peek(), map[dx][dy + 1], speed);
+            dy += 1;
+          } else {
+            d = 0;
+          }
+        }
+        if (d == 4) {
+          if (map[dx - 1][dy].walkable) {
+            moves = Mnode.calculate(moves.peek(), map[dx - 1][dy], speed);
+            dx -= 1;
+          } else {
+            d = 0;
+          }
+        }
+      }
+      catch (IndexOutOfBoundsException e) {
+        d = 0;
+      }
+    }
+
+    if (!(map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped)) {
+      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped = true;
+      score += 200;
+      left -= 1;
+    }
+
+    if (null != map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has) {
+      reallyobvious = 101;
+      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has = null;
+    }
+
+    if (reallyobvious > 0) {
+      reallyobvious -= 1;
+      //System.out.println(reallyobvious);
+    }
+
+    if (animer == 0) {
+      imageMode(CENTER);
+      ellipse(moves.peek().x, moves.peek().y, 40, 40);
+    } else {
+      if ( d == 0) {
+        //PImage pac = loadImage(animer + ".png");
+        image(pacmenList.get(animer), moves.peek().x, moves.peek().y);
+        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
+      } else {
+        //PImage pac = loadImage(animer + (12 * (d - 1)) + ".png");
+        image(pacmenList.get((12 * (d - 1))), moves.peek().x, moves.peek().y);
+        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
+      }
+    }
+
+    if (animer == 0) {
+      animer = 2;
+      way = 2;
+    } else {
+      if (animer == 12) {
+        animer = 10;
+        way = -2;
+      } else {
+        animer += way;
+      }
+    }
+  }
+
+  for (int x = 0; x < 24; x ++) {
+    for (int y = 0; y < 24; y ++) {
+      Mnode cur = map[x][y];
+      fill(255, 255, 255);
+      if (cur.stepped) {
+      } else {
+        rect(cur.x - 5, cur.y - 5, 10, 10);
+      }
+      if (null != cur.has) {
+        ellipse(cur.x, cur.y, 21, 21);
+      }
+      fill(255, 255, 0);
+    }
+  }
+
+  if (left == 0) {
+    clear();
+  }
+
+  if (lives < 0) {
+    screen++;
+  }
+}
+
+void gameover() {
+  background(0, 0, 0);
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textSize(200);
+  text("GAME OVER", img.width/2, img.height/2);
+  if (change) {
+    screen--;
+  }
+}
+
+boolean contained(ArrayList<Mnode> a, Mnode x) {
+  for (int i = 0; i < a.size(); i++) {
+    if (compare(a.get(i), x) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+int compare(Mnode first, Mnode other) {
+  return first.compareTo(other);
+}
+
+void keyPressed() {
+  //println(mouseX +"," + mouseY);
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      d = 4;
+    }
+    if (keyCode == RIGHT) {
+      d = 2;
+    }
+    if (keyCode == UP) {
+      d = 1;
+    }
+    if (keyCode == DOWN) {
+      d = 3;
+    }
+  }
+}
+
+void mousePressed() {
+  change = true;
+}
+
+void mapping() {
   map[1][1].walkable = false;
   map[1][2].walkable = false;
   map[1][3].walkable = false;
@@ -258,6 +531,12 @@ void setup() {
   map[13][12].walkable = false;
   map[10][11].walkable = false;
   map[13][11].walkable = false;
+  //temp false
+  map[11][10].walkable = false;
+  map[12][10].walkable = false;
+  map[11][11].walkable = false;
+  map[12][11].walkable = false;
+
   for (int dax = 0; dax < 24; dax++) {
     for (int dyx = 0; dyx < 24; dyx++) {
       if (!(map[dax][dyx].walkable)) {
@@ -266,204 +545,10 @@ void setup() {
       }
     }
   }
-  moves.addLast(map[0][0]);
-  dx = 0;
-  dy = 0;
-  d = 0;
-  animer = 0;
-  way = 1;
-  fill(255, 255, 255);
-  map[0][23].has = new PowerUp(map[0][23], 0, 23);
-  fill(255, 255, 0);
-  red = new Ghost("red");
-  red.start(map[10][11]);
-  yellow = new Ghost("yellow");
-  yellow.start(map[11][11]);
-  blue = new Ghost("blue");
-  blue.start(map[12][11]);
-  pink = new Ghost("pink");
-  pink.start(map[13][11]);
-}
 
-void draw() {
-  /*
-  if (inBox) {
-   ghostPositions[0][0] = red.moves.peek().row; 
-   ghostPositions[0][1] = red.moves.peek().col;
-   ghostPositions[1][0] = yellow.moves.peek().row;
-   ghostPositions[1][1] = yellow.moves.peek().col;
-   ghostPositions[2][0] = blue.moves.peek().row;
-   ghostPositions[2][1] = blue.moves.peek().col;
-   ghostPositions[3][0] = pink.moves.peek().row;
-   ghostPositions[3][1] = pink.moves.peek().col;
-   int [][] exitpos = { {map[11][11].row, map[11][11].col}, {map[12][11].row, map[12][11].col} };
-   //if (Arrays.asList(ghostPositions).contains(exitpos[0]) || Arrays.asList(ghostPositions).contains(exitpos[1]))
-   if (!contained(ghostPositions, exitpos[0]) && !contained(ghostPositions, exitpos[1])) {
-   System.out.println("JAHDJSJS");
-   inBox = false;
-   }
-   if (!inBox && changeNeeded) {
-   map[11][11].walkable = false;
-   map[12][11].walkable = false;
-   changeNeeded = false;
-   }
-   }
-   */
-  if (time/100 == 1) {
-    System.out.println("JAHDJSJS");
-    map[11][11].walkable = false;
-    map[12][11].walkable = false;
-  }
-  if(time/125 == 1){
-    map[11][10].walkable = false;
-    map[12][10].walkable = false;
-  }
-  if ((int)(Math.random() * 2000) == 42) {
-    int sax = (int)(24 * Math.random());
-    int say = (int)(24 * Math.random());
-    map[sax][say].has = new PowerUp(map[sax][say], sax, say);
-  }
-  //background(loadImage("SmallerMap.jpg"));
-  background(loadImage("Map.jpg"));
-  fill(255, 255, 255);
-  textAlign(CENTER);
-  textSize(30);
-  text("" + score, 1100, 40);
-
-  if (reallyobvious != 0) {
-    red.scared();
-    yellow.scared();
-    blue.scared();
-    pink.scared();
-  }
-  if (reallyobvious != 0) {
-    red.unscared();
-    yellow.unscared();
-    blue.unscared();
-    pink.unscared();
-  }
-  red.display();
-  yellow.display();
-  blue.display();
-  pink.display();
-  if (moves.size() > 1) {
-    moves.removeFirst();
-  } else {
-    if (d != 0) {
-      try {
-        if (d == 1) {
-          if (map[dx][dy - 1].walkable) {
-            moves = Mnode.calculate(moves.peek(), map[dx][dy - 1], 6);
-            dy -= 1;
-          } else {
-            d = 0;
-          }
-        }
-        if (d == 2) {
-          if (map[dx + 1][dy].walkable) {
-            moves = Mnode.calculate(moves.peek(), map[dx + 1][dy], 6);
-            dx += 1;
-          } else {
-            d = 0;
-          }
-        }
-        if (d == 3) {
-          if (map[dx][dy + 1].walkable) {
-            moves = Mnode.calculate(moves.peek(), map[dx][dy + 1], 6);
-            dy += 1;
-          } else {
-            d = 0;
-          }
-        }
-        if (d == 4) {
-          if (map[dx - 1][dy].walkable) {
-            moves = Mnode.calculate(moves.peek(), map[dx - 1][dy], 6);
-            dx -= 1;
-          } else {
-            d = 0;
-          }
-        }
-      }
-      catch (IndexOutOfBoundsException e) {
-        d = 0;
-      }
-    }
-    if (!(map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped)) {
-      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped = true;
-      left -= 1;
-    }
-    if (null != map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has) {
-      reallyobvious = 101;
-      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has = null;
-    }
-    if (reallyobvious > 0) {
-      reallyobvious -= 1;
-      System.out.println(reallyobvious);
-    }
-    if (animer == 0) {
-      imageMode(CENTER);
-      ellipse(moves.peek().x, moves.peek().y, 40, 40);
-    } else {
-      if ( d == 0) {
-        PImage pac = loadImage(animer + ".png");
-        image(pac, moves.peek().x, moves.peek().y);
-        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
-      } else {
-        PImage pac = loadImage(animer + (12 * (d - 1)) + ".png");
-        image(pac, moves.peek().x, moves.peek().y);
-        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
-      }
-    }
-    if (animer == 0) {
-      animer = 2;
-      way = 2;
-    } else {
-      if (animer == 12) {
-        animer = 10;
-        way = -2;
-      } else {
-        animer += way;
-      }
-    }
-  }
-  for (int x = 0; x < 24; x ++) {
-    for (int y = 0; y < 24; y ++) {
-      Mnode cur = map[x][y];
-      fill(255, 255, 255);
-      if (cur.stepped) {
-      } else {
-        rect(cur.x - 5, cur.y - 5, 10, 10);
-      }
-      if (null != cur.has) {
-        ellipse(cur.x, cur.y, 21, 21);
-      }
-      fill(255, 255, 0);
-    }
-  }
-  if (left == 0) {
-    clear();
-  }
-  time++;
-}
-/*
-public static boolean contained(int [][] key, int [] check) {
- return Arrays.asList(key).containsAll(Arrays.asList(check));
- }
- */
-void keyPressed() {
-  println(mouseX +"," + mouseY);
-  if (key == CODED) {
-    if (keyCode == LEFT) {
-      d = 4;
-    }
-    if (keyCode == RIGHT) {
-      d = 2;
-    }
-    if (keyCode == UP) {
-      d = 1;
-    }
-    if (keyCode == DOWN) {
-      d = 3;
-    }
-  }
+  //retrue
+  map[11][10].walkable = true;
+  map[12][10].walkable = true;
+  map[11][11].walkable = true;
+  map[12][11].walkable = true;
 }

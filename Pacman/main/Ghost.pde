@@ -10,11 +10,13 @@ class Ghost {
   public String which;
   public int[][] possible = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
   public int time;
+  public int speed;
 
   public Ghost(String shade) {
     img = loadImage(shade+".png"); //(shade+".gif");
     moves = new ArrayDeque<Mnode>();
     time = 0;
+    speed = 4;
   }
 
   public Ghost(String shade, Mnode start, String name) {
@@ -42,13 +44,16 @@ class Ghost {
       image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
     } else {
       scared();
+      tint(0, 153, 204);  // Tint blue
+      image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
+      noTint();
     }
     if (time%10 == 0) {
       update();
     }
     time++;
   }
-  
+
   void update() {
     ArrayList<int[]> list = new ArrayList<int[]>();
     boolean tried = true;
@@ -64,7 +69,7 @@ class Ghost {
         int c = moves.peek().col + move[1];
         if (map[r][c].walkable == true) {
           tried = false;
-          moves = Mnode.calculate(moves.peek(), map[r][c], 6);
+          moves = Mnode.calculate(moves.peek(), map[r][c], speed);
           //System.out.println(moves.size());
           //System.out.println(moves.peek());
         } else {
@@ -81,14 +86,9 @@ class Ghost {
 
   void scared() {
     edible = false;
-    tint(0, 153, 204);  // Tint blue
-    image(img, x, y, img.width * .4, img.height * .4);
-    noTint();
   }
   void unscared() {
     edible = true;
-    noTint();
-    image(img, x, y, img.width * .4, img.height * .4);
   }
 
   // public Mnode nextSpot(){

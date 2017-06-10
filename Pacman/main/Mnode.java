@@ -1,6 +1,6 @@
 import java.util.ArrayDeque;
 
-public class Mnode{
+public class Mnode implements Comparable<Mnode> {
 
   public int x;
   public int y;
@@ -20,21 +20,19 @@ public class Mnode{
   }
 
   public Mnode(int r, int c, int dx, int dy, boolean clear) {
+    this(dx, dy, clear);
     row = r;
     col = c;
-    x = dx;
-    y = dy;
-    walkable = clear;
-    stepped = occupado = !(clear);
-    has = null;
   }
-  
+
+  public int compareTo(Mnode o) {
+    return Math.abs(x - o.x) + Math.abs(y - o.y) + Math.abs(row - o.row) + Math.abs(col - o.col);
+  }
+
   public String toString() {
-    //return "("+x+","+y+")";
     return "("+row+","+col+")";
   }
   public String coor() {
-    //return "("+x+","+y+")";
     return "("+x+","+y+")";
   }
 
