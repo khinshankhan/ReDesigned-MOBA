@@ -24,28 +24,40 @@ public int screen;
 public int reallyobvious;
 
 void setup() {
+  frameRate(50);
   screen = 0;
-  speed = 4;
+  speed = 2;
   lives = 3;
   score = 0;
   pacmenList = new ArrayList<PImage>();
-  for (int i = 0; i < 49; i++) {
+  for (int i = 0; i < 48; i++) {
     PImage temp = loadImage(i + ".png");
     pacmenList.add(temp);
   }
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
+  /*
   size(1200, 1024);
-  img = loadImage("Map.jpg");
+   img = loadImage("Map.jpg");
+   background(img);
+   for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
+   for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
+   map[x][y] = new Mnode(x, y, dx, dy, true);
+   left += 1;
+   }
+   }
+   */
+
+  size(600, 512);
+  img = loadImage("Mapa.jpg");
   background(img);
-  for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
-    for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
+  for (int x = 0, dx = 40/2; x < 24; x ++, dx += 41/2) {
+    for (int y = 0, dy = 50/2; y < 24; y ++, dy += 41/2) {
       map[x][y] = new Mnode(x, y, dx, dy, true);
       left += 1;
     }
   }
-
   mapping();
 
   pacReset();
@@ -148,15 +160,14 @@ void gameplay() {
   background(img);
   fill(255, 255, 255);
   textAlign(CENTER);
-  textSize(30);
-  text("SCORE", 1125, 70);
-  text("" + score, 1125, 120);
-  text("LIVES", 1125, 170);
-
-  for (int i = 0, posi = 1075; i < lives; i++, posi += 50) {
-    image(pacmenList.get(23), posi, 250);
+  textSize(20);
+  text("SCORE", 562, 70);
+  text("" + score, 560, 100);
+  text("LIVES", 562, 150);
+  for (int i = 0, posi = 535; i < lives; i++, posi += 25) {
+    image(pacmenList.get(23), posi, 180, pacmenList.get(23).width/2, pacmenList.get(23).height/2);
   }
-  System.out.println(reallyobvious);
+  //System.out.println(reallyobvious);
 
   if (reallyobvious != 0) {
     red.edible = false;
@@ -220,15 +231,15 @@ void gameplay() {
       }
     }
 
-    if (!(map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped)) {
-      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].stepped = true;
+    if (!(map[(moves.peek().x - (40/2)) / (41/2)][(moves.peek().y - (50/2)) / (41/2)].stepped)) {
+      map[(moves.peek().x - (40/2)) / (41/2)][(moves.peek().y - (50/2)) / (41/2)].stepped = true;
       score += 200;
       left -= 1;
     }
 
-    if (null != map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has) {
+    if (null != map[(moves.peek().x - (40/2)) / (41/2)][(moves.peek().y - (50/2)) / (41/2)].has) {
       reallyobvious = 101;
-      map[(moves.peek().x - 40) / 41][(moves.peek().y - 50) / 41].has = null;
+      map[(moves.peek().x - (40/2)) / (41/2)][(moves.peek().y - (50/2)) / (41/2)].has = null;
     }
 
     if (reallyobvious > 0) {
@@ -242,11 +253,11 @@ void gameplay() {
     } else {
       if ( d == 0) {
         //PImage pac = loadImage(animer + ".png");
-        image(pacmenList.get(animer), moves.peek().x, moves.peek().y);
+        image(pacmenList.get(animer), moves.peek().x, moves.peek().y, pacmenList.get(animer).width/2, pacmenList.get(animer).height/2);
         //image(pac, moves.peek().x - 20, moves.peek().y - 20);
       } else {
         //PImage pac = loadImage(animer + (12 * (d - 1)) + ".png");
-        image(pacmenList.get((12 * (d - 1))), moves.peek().x, moves.peek().y);
+        image(pacmenList.get((12 * (d - 1))), moves.peek().x, moves.peek().y, pacmenList.get((12 * (d - 1))).width/2, pacmenList.get((12 * (d - 1))).height/2);
         //image(pac, moves.peek().x - 20, moves.peek().y - 20);
       }
     }
@@ -292,15 +303,15 @@ void gameover() {
   background(0, 0, 0);
   fill(255, 255, 255);
   textAlign(CENTER);
-  textSize(200);
-  text("GAME OVER", img.width/2, img.height/2);
-  textSize(100);
-  text("CLICK TO CONTINUE", img.width/2, img.height - img.height/4);
+  textSize(50);
+  text("GAME OVER", img.width/2, img.height/3);
+  textSize(25);
+  text("TOUCH TO CONTINUE", img.width/2, img.height - img.height/3);
 }
 
 int contained(ArrayList<Mnode> a, Mnode x) {
   for (int i = 0; i < a.size(); i++) {
-    if (compare(a.get(i), x) < 50) {
+    if (compare(a.get(i), x) < 50/2) {
       return i;
     }
   }

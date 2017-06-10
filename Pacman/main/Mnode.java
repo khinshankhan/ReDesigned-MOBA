@@ -40,8 +40,8 @@ public class Mnode implements Comparable<Mnode> {
     ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
     double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));
     double times = (double)(dist / spd);
-    double incrx = (double)((e.x - s.x) / times);
-    double incry = (double)((e.y - s.y) / times);
+    double incrx = (double)((e.x - s.x) / times)/2;
+    double incry = (double)((e.y - s.y) / times)/2;
     boolean overshot = false;
     if (e.x > s.x) {
       overshot = true;

@@ -18,8 +18,8 @@ class Ghost {
     shade = which;
     moves = new ArrayDeque<Mnode>();
     time = 0;
-    speed = 4;
-    edible = false;
+    speed = 2;
+    edible = true;
   }
 
   public Ghost(String shade, Mnode start) {
@@ -41,10 +41,10 @@ class Ghost {
     y = moves.peek().col;
     if (edible) {
       imageMode(CENTER);
-      image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
+      image(img, moves.peek().x, moves.peek().y, (img.width * .4)/2, (img.height * .4)/2);
     } else {
       tint(0, 153, 204);  // Tint blue
-      image(img, moves.peek().x, moves.peek().y, img.width * .4, img.height * .4);
+      image(img, moves.peek().x, moves.peek().y, (img.width * .4)/2, (img.height * .4)/2);
       noTint();
     }
     if (time%10 == 0) {
