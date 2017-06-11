@@ -13,6 +13,7 @@ public Ghost pink;
 public int dx;
 public int dy;
 public int d;
+public int f;
 public int way;
 public int left;
 public int animer;
@@ -31,8 +32,9 @@ void setup() {
   speed = 2;
   lives = 3;
   score = 0;
+  f = 0;
   pacmenList = new ArrayList<PImage>();
-  for (int i = 0; i < 48; i++) {
+  for (int i = 0; i < 49; i++) {
     PImage temp = loadImage(i + ".png");
     pacmenList.add(temp);
   }
@@ -66,7 +68,10 @@ void setup() {
 
   pacReset();
   fill(255, 255, 255);
-  map[0][23].has = new PowerUp(map[0][23], 0, 23);
+  map[2][21].has = new PowerUp(map[2][21], 2, 21);
+  map[2][2].has = new PowerUp(map[2][2], 2, 2);
+  map[21][2].has = new PowerUp(map[21][2], 21, 2);
+  map[21][21].has = new PowerUp(map[21][21], 21, 21);
   fill(255, 255, 0);
   ghostReset();
 }
@@ -156,12 +161,30 @@ void gameplay() {
   if ((int)(Math.random() * 2000) == 42) {
     int sax = (int)(24 * Math.random());
     int say = (int)(24 * Math.random());
-    map[sax][say].has = new PowerUp(map[sax][say], sax, say);
+    if (map[sax][say].walkable){
+      map[sax][say].has = new PowerUp(map[sax][say], sax, say);
+    }
   }
 
   //cause lag?
   //background(loadImage("Map.jpg"));
   background(img);
+  if (animer == 0) {
+      animer = 2;
+      way = 2;
+    } else {
+      if (animer == 12) {
+        animer = 10;
+        way = -2;
+      } else {
+        animer += way;
+      }
+    }
+    if (animer == 0) {
+        image(pacmenList.get(0), moves.peek().x, moves.peek().y, 20, 20);      
+    } else {
+        image(pacmenList.get((12 * f) + animer), moves.peek().x, moves.peek().y, 20, 20);
+    }
   fill(255, 255, 255);
   textAlign(CENTER);
   textSize(20);
@@ -256,32 +279,6 @@ void gameplay() {
       //System.out.println(reallyobvious);
     }
 
-    if (animer == 0) {
-      imageMode(CENTER);
-      ellipse(moves.peek().x, moves.peek().y, 40, 40);
-    } else {
-      if ( d == 0) {
-        //PImage pac = loadImage(animer + ".png");
-        image(pacmenList.get(animer), moves.peek().x, moves.peek().y, pacmenList.get(animer).width/2, pacmenList.get(animer).height/2);
-        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
-      } else {
-        //PImage pac = loadImage(animer + (12 * (d - 1)) + ".png");
-        image(pacmenList.get((12 * (d - 1))), moves.peek().x, moves.peek().y, pacmenList.get((12 * (d - 1))).width/2, pacmenList.get((12 * (d - 1))).height/2);
-        //image(pac, moves.peek().x - 20, moves.peek().y - 20);
-      }
-    }
-
-    if (animer == 0) {
-      animer = 2;
-      way = 2;
-    } else {
-      if (animer == 12) {
-        animer = 10;
-        way = -2;
-      } else {
-        animer += way;
-      }
-    }
   }
 
   for (int x = 0; x < 24; x ++) {
@@ -339,6 +336,7 @@ void pacReset() {
   dy = 0;
   d = 0;
   animer = 0;
+  f = 0;
   way = 1;
 }
 
@@ -403,15 +401,19 @@ void keyPressed() {
   if (key == CODED) {
     if (keyCode == LEFT) {
       d = 4;
+      f = 3;
     }
     if (keyCode == RIGHT) {
       d = 2;
+      f = 1;
     }
     if (keyCode == UP) {
       d = 1;
+      f = 0;
     }
     if (keyCode == DOWN) {
       d = 3;
+      f = 2;
     }
   }
 }
