@@ -2,7 +2,7 @@ import java.util.ArrayDeque;
 import java.util.Random;
 class Ghost {
 
-  PImage img;
+  public PImage img;
   public int x;
   public int y;
   public ArrayDeque<Mnode> moves;
