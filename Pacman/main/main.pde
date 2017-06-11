@@ -23,6 +23,8 @@ public int lives;
 public int screen;
 public int reallyobvious;
 
+public MazeSolver forGhosts;
+
 void setup() {
   frameRate(50);
   screen = 0;
@@ -59,6 +61,8 @@ void setup() {
     }
   }
   mapping();
+  
+  forGhosts = new MazeSolver(map);
 
   pacReset();
   fill(255, 255, 255);
@@ -182,7 +186,12 @@ void gameplay() {
     blue.edible = true;
     pink.edible = true;
   }
-
+  
+  red.pacmanPosition = moves.peek();
+  yellow.pacmanPosition = moves.peek();
+  blue.pacmanPosition = moves.peek();
+  pink.pacmanPosition = moves.peek();
+  
   red.display();
   yellow.display();
   blue.display();
@@ -360,18 +369,22 @@ void ghostReset(String name) {
   case "red": 
     red = new Ghost("red");
     red.start(map[10][11]);
+    red.nexts = forGhosts;
     break;
   case "yellow": 
     yellow = new Ghost("yellow");
     yellow.start(map[11][11]);
+    yellow.nexts = forGhosts;
     break;
   case "blue": 
     blue = new Ghost("blue");
     blue.start(map[12][11]);
+    blue.nexts = forGhosts;
     break;
   case "pink": 
     pink = new Ghost("pink");
     pink.start(map[13][11]);
+    pink.nexts = forGhosts;
     break;
   default: 
     //System.out.println( "INVALID. CURRENTLY THERE ARE ONLY:\n * + - / %");

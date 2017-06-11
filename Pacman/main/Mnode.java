@@ -37,21 +37,27 @@ public class Mnode implements Comparable<Mnode> {
   }
 
   public static ArrayDeque<Mnode> calculate(Mnode s, Mnode e, int spd) {
-    ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
-    double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));
-    double times = (double)(dist / spd);
-    double incrx = (double)((e.x - s.x) / times)/2;
-    double incry = (double)((e.y - s.y) / times)/2;
-    boolean overshot = false;
-    if (e.x > s.x) {
-      overshot = true;
+      ArrayDeque<Mnode> moves = new ArrayDeque<Mnode>();
+      try {
+      double dist = Math.sqrt(((e.x - s.x) * (e.x - s.x)) + ((e.y - s.y) * (e.y - s.y)));
+      double times = (double)(dist / spd);
+      double incrx = (double)((e.x - s.x) / times)/2;
+      double incry = (double)((e.y - s.y) / times)/2;
+      boolean overshot = false;
+      if (e.x > s.x) {
+        overshot = true;
+      }
+      moves.addFirst(s);
+      int t = 0;
+      for (double nowx = s.x + incrx, nowy = s.y + incry; (Math.sqrt(((e.x - nowx) * (e.x - nowx)) + ((e.y - nowy) * (e.y - nowy))) > 5) && (t < times - 1); nowx += incrx, nowy += incry, t++) {
+        moves.addLast(new Mnode((int)nowx, (int)nowy, true));
+      }
+      moves.addLast(e);
+      return moves;
     }
-    moves.addFirst(s);
-    int t = 0;
-    for (double nowx = s.x + incrx, nowy = s.y + incry; (Math.sqrt(((e.x - nowx) * (e.x - nowx)) + ((e.y - nowy) * (e.y - nowy))) > 5) && (t < times - 1); nowx += incrx, nowy += incry, t++) {
-      moves.addLast(new Mnode((int)nowx, (int)nowy, true));
+    catch(Exception argadlksc) {
+      argadlksc.printStackTrace();
+      return moves;
     }
-    moves.addLast(e);
-    return moves;
   }
 }

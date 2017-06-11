@@ -11,7 +11,8 @@ class Ghost {
   public int[][] possible = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
   public int time;
   public int speed;
-  Mnode pos;
+  public Mnode pacmanPosition;
+  public MazeSolver nexts;
 
   public Ghost(String shade) {
     img = loadImage(shade+".png"); //(shade+".gif");
@@ -34,9 +35,9 @@ class Ghost {
   }
 
   void display() {
-    if (moves.size() > 1) {
-      pos = moves.removeFirst();
-    } 
+    //if (moves.size() > 1) {
+    //  pos = moves.removeFirst();
+    //} 
     x = moves.peek().row;
     y = moves.peek().col;
     if (edible) {
@@ -54,6 +55,7 @@ class Ghost {
   }
 
   void update() {
+    /*
     ArrayList<int[]> list = new ArrayList<int[]>();
     boolean tried = true;
     Random rnd = new Random();
@@ -77,6 +79,9 @@ class Ghost {
         tried = true;
       }
     }
+    */
+    System.out.println(nexts.nodes(moves.peek(), pacmanPosition));
+    moves = Mnode.calculate(moves.peek(), nexts.nodes(moves.peek(), pacmanPosition), speed);
   }
 
   // public Mnode nextSpot(){
