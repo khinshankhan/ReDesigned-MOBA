@@ -39,17 +39,6 @@ void setup() {
   left = 0;
   map= new Mnode[24][24];
   moves = new ArrayDeque<Mnode>();
-  /*
-  size(1200, 1024);
-   img = loadImage("Map.jpg");
-   background(img);
-   for (int x = 0, dx = 40; x < 24; x ++, dx += 41) {
-   for (int y = 0, dy = 50; y < 24; y ++, dy += 41) {
-   map[x][y] = new Mnode(x, y, dx, dy, true);
-   left += 1;
-   }
-   }
-   */
 
   size(600, 512);
   img = loadImage("Mapa.jpg");
@@ -60,6 +49,7 @@ void setup() {
       left += 1;
     }
   }
+
   mapping();
 
   pacReset();
@@ -75,13 +65,14 @@ void setup() {
 void draw() {
   if (screen == 0) {
     gameplay();
-  } else {
+  } else if (screen == 1) {
     setup();
     screen++;
     gameover();
-    //pacReset();
-    //ghostReset();
-    //lives = 3;
+  } else {
+    setup();
+    screen = 2;
+    gamewon();
   }
   time++;
 }
@@ -157,7 +148,7 @@ void gameplay() {
   if ((int)(Math.random() * 2000) == 42) {
     int sax = (int)(24 * Math.random());
     int say = (int)(24 * Math.random());
-    if (map[sax][say].walkable){
+    if (map[sax][say].walkable) {
       map[sax][say].has = new PowerUp(map[sax][say], sax, say);
     }
   }
@@ -166,30 +157,31 @@ void gameplay() {
   //background(loadImage("Map.jpg"));
   background(img);
   if (animer == 0) {
-      animer = 2;
-      way = 2;
+    animer = 2;
+    way = 2;
+  } else {
+    if (animer == 12) {
+      animer = 10;
+      way = -2;
     } else {
-      if (animer == 12) {
-        animer = 10;
-        way = -2;
-      } else {
-        animer += way;
-      }
+      animer += way;
     }
-    if (animer == 0) {
-        image(pacmenList.get(0), moves.peek().x, moves.peek().y, 20, 20);      
-    } else {
-        image(pacmenList.get((12 * f) + animer), moves.peek().x, moves.peek().y, 20, 20);
-    }
+  }
+  if (animer == 0) {
+    image(pacmenList.get(0), moves.peek().x, moves.peek().y, 20, 20);
+  } else {
+    image(pacmenList.get((12 * f) + animer), moves.peek().x, moves.peek().y, 20, 20);
+  }
   fill(255, 255, 255);
   textAlign(CENTER);
   textSize(20);
-  text("SCORE", 562, 70);
-  text("" + score, 560, 100);
-  text("LIVES", 562, 150);
-  for (int i = 0, posi = 535; i < lives; i++, posi += 25) {
+  text("SCORE", 550, 70);
+  text("" + score, 550, 100);
+  text("LIVES", 550, 150);
+  for (int i = 0, posi = 527; i < lives; i++, posi += 25) {
     image(pacmenList.get(23), posi, 180, pacmenList.get(23).width/2, pacmenList.get(23).height/2);
   }
+  text("EXIT", 550, 420);
   //System.out.println(reallyobvious);
 
   if (reallyobvious != 0) {
@@ -269,7 +261,6 @@ void gameplay() {
       reallyobvious -= 1;
       //System.out.println(reallyobvious);
     }
-
   }
 
   for (int x = 0; x < 24; x ++) {
@@ -289,6 +280,7 @@ void gameplay() {
 
   if (left == 0) {
     clear();
+    screen = 2;
   }
 
   if (lives < 0) {
@@ -302,6 +294,16 @@ void gameover() {
   textAlign(CENTER);
   textSize(50);
   text("GAME OVER", img.width/2, img.height/3);
+  textSize(25);
+  text("TOUCH TO CONTINUE", img.width/2, img.height - img.height/3);
+}
+
+void gamewon() {
+  background(0, 0, 0);
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textSize(50);
+  text("GAME WON", img.width/2, img.height/3);
   textSize(25);
   text("TOUCH TO CONTINUE", img.width/2, img.height - img.height/3);
 }
@@ -408,6 +410,12 @@ void keyPressed() {
 void mousePressed() {
   if (screen == 1) {
     screen--;
+  }
+  if (screen == 2) {
+    screen -= 2;
+  }
+  if (screen == 0 && mouseX > 520 && mouseX < 565 && mouseY > 400 && mouseY <445) {
+    exit();
   }
 }
 
