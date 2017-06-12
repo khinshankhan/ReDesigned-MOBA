@@ -85,8 +85,12 @@ class Ghost {
   }
 
   void chase() {
-    nexts.solve(moves.peek(), pacmanPosition);
-    nexts.nexts.removeFirst();
-    moves= Mnode.calculate(nexts.nexts.removeFirst(), pacmanPosition, speed);
+    try {
+      nexts.solve(moves.peek(), pacmanPosition);
+      nexts.nexts.removeFirst();
+      moves= Mnode.calculate(nexts.nexts.removeFirst(), pacmanPosition, speed);
+    }
+    catch(Exception e) {
+    }
   }
 }

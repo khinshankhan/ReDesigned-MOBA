@@ -400,6 +400,8 @@ void ghostReset(String name) {
 
 void keyPressed() {
   //println(mouseX +"," + mouseY);
+  //System.out.println(key);
+  
   if (key == CODED) {
     if (keyCode == LEFT) {
       d = 4;
@@ -417,6 +419,27 @@ void keyPressed() {
       d = 3;
       f = 2;
     }
+  }
+  
+  //normal speed
+  if(key == 'a'){
+    speed = 3;
+  }
+  //super speed
+  if(key == 's'){
+    speed = 1000;
+  }
+  //slow speed
+  if(key == 'd'){
+    speed = 1;
+  }
+  //ghosting
+  if(key == 'z'){
+    reallyobvious = 200;
+  }
+  //change to non edible
+  if(key == 'x'){
+    reallyobvious = 0;
   }
 }
 
