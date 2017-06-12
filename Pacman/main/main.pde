@@ -23,11 +23,12 @@ public int speed;
 public int lives;
 public int screen;
 public int reallyobvious;
+public Mnode currentposi;
 
 void setup() {
   frameRate(50);
   screen = 0;
-  speed = 2;
+  speed = 3;
   lives = 3;
   score = 0;
   f = 0;
@@ -60,6 +61,7 @@ void setup() {
   map[21][21].has = new PowerUp(map[21][21], 21, 21);
   fill(255, 255, 0);
   ghostReset();
+  currentposi = moves.peek();
 }
 
 void draw() {
@@ -78,7 +80,7 @@ void draw() {
 }
 
 void gameplay() {
-
+  //System.out.println(time);
   imageMode(CENTER);
 
   if (moves.size() > 0 && red.moves.size() > 1 && yellow.moves.size() > 1 && blue.moves.size() > 1 && pink.moves.size() > 1) {
@@ -133,18 +135,18 @@ void gameplay() {
       //System.out.println( "DEBUG");
     }
   }
-
+  /*
   if (time != 0) {
-    if (time%200 == 0) {
-      map[11][11].walkable = false;
-      map[12][11].walkable = false;
-    }
-    if (time%300 == 0) {
-      map[11][10].walkable = false;
-      map[12][10].walkable = false;
-    }
-  }
-
+   if (time%200 == 0) {
+   map[11][11].walkable = false;
+   map[12][11].walkable = false;
+   }
+   if (time%300 == 0) {
+   map[11][10].walkable = false;
+   map[12][10].walkable = false;
+   }
+   }
+   */
   if ((int)(Math.random() * 2000) == 42) {
     int sax = (int)(24 * Math.random());
     int say = (int)(24 * Math.random());
@@ -197,11 +199,20 @@ void gameplay() {
     blue.edible = true;
     pink.edible = true;
   }
+  red.pacmanPosition = currentposi;
+  yellow.pacmanPosition = currentposi;
+  blue.pacmanPosition = currentposi;
+  pink.pacmanPosition = currentposi;
+  int style = 1;
+  if ((time/250)%2 == 0) {
+    style = 0;
+  }
+  red.display(style);
+  yellow.display(style);
+  blue.display(style);
+  pink.display(style);
 
-  red.display();
-  yellow.display();
-  blue.display();
-  pink.display();
+  //System.out.println("END OF WAVE");
 
   if (moves.size() > 1) {
     moves.removeFirst();
@@ -240,6 +251,8 @@ void gameplay() {
             d = 0;
           }
         }
+        //System.out.println(moves.peek());
+        currentposi = moves.peek();
       }
       catch (IndexOutOfBoundsException e) {
         d = 0;

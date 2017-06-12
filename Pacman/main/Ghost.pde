@@ -1,5 +1,5 @@
 import java.util.ArrayDeque;
-import java.util.Random;
+
 class Ghost {
 
   public PImage img;
@@ -11,32 +11,31 @@ class Ghost {
   public int[][] possible = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
   public int time;
   public int speed;
-  Mnode pos;
+  public Mnode pacmanPosition;
+  public MazeSolver nexts;
+
 
   public Ghost(String shade) {
-    img = loadImage(shade+".png"); //(shade+".gif");
-    shade = which;
+    img = loadImage(shade+".png");
+    which = shade;
     moves = new ArrayDeque<Mnode>();
     time = 0;
     speed = 2;
     edible = true;
+    nexts = new MazeSolver(map);
   }
 
   public Ghost(String shade, Mnode start) {
     this(shade);
     moves = new ArrayDeque<Mnode>();
     moves.addFirst(start);
-    //which = name;
   }
 
   void start(Mnode first) {
     moves.add(first);
   }
 
-  void display() {
-    if (moves.size() > 1) {
-      pos = moves.removeFirst();
-    } 
+  void display(int i) {
     x = moves.peek().row;
     y = moves.peek().col;
     if (edible) {
@@ -48,38 +47,46 @@ class Ghost {
       noTint();
     }
     if (time%10 == 0) {
-      update();
+      update(i);
     }
     time++;
   }
 
-  void update() {
-    ArrayList<int[]> list = new ArrayList<int[]>();
-    boolean tried = true;
-    Random rnd = new Random();
-    int randomNumberFromArray = rnd.nextInt(4);
-    while (tried) {
-      int rand = rnd.nextInt(4);
-      int [] move = new int[2];
-      move = possible[rand];
-      try {
-        //System.out.println(moves.peek().row+":"+moves.peek().col);
-        int r = moves.peek().row + move[0];
-        int c = moves.peek().col + move[1];
-        if (map[r][c].walkable == true) {
-          tried = false;
-          moves = Mnode.calculate(moves.peek(), map[r][c], speed);
-        } else {
-          throw new IndexOutOfBoundsException();
-        }
-      }
-      catch (IndexOutOfBoundsException e) {
-        tried = true;
-      }
+  void update(int i) {
+    if (i == 0) {
+      scatter();
+    }
+    if (i == 1) {
+      chase();
     }
   }
 
-  // public Mnode nextSpot(){
-  //decide where to go for the next spot, so that in the main.pde file, you can be like if [ghost].moves.size() == 1, [ghost].moves = calculate([ghost].moves.peek(), [ghost].next(), 6)
-  //}
+  void scatter() {
+    switch (which) {
+    case "red": 
+      nexts.solve(moves.peek(), map[0][0]);
+      break;
+    case "yellow": 
+      nexts.solve(moves.peek(), map[0][23]);
+      break;
+    case "blue": 
+      nexts.solve(moves.peek(), map[23][0]);
+      break;
+    case "pink": 
+      nexts.solve(moves.peek(), map[23][23]);
+      break;
+    }
+    try {
+      nexts.nexts.removeFirst();
+      moves.addFirst(nexts.nexts.peek());
+    }
+    catch(Exception e) {
+    }
+  }
+
+  void chase() {
+    nexts.solve(moves.peek(), pacmanPosition);
+    nexts.nexts.removeFirst();
+    moves= Mnode.calculate(nexts.nexts.removeFirst(), pacmanPosition, speed);
+  }
 }
