@@ -76,14 +76,12 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
    -Increasing layer lives (3/4 is already pretty overkill for one level)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-~~~~~~~~~~~~~~~~~
- ---------------
-  Project Idea: 
- ---------------
-~~~~~~~~~~~~~~~~~
-
+----------------
+  Development Log: 
+----------------
+ 
 ~~~~~~~~~~~~~~~~~~~~~~~
-Development Log:
 (ERASED ALL LOGS RELATED TO LEAGUE OF LEGENDS SIMULATION)
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
