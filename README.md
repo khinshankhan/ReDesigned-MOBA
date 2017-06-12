@@ -95,6 +95,7 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
  -illogical pathfinding
 -June 7, 2017
  -player movement more proper, super laggy
+ -interactable pellet, no score though
  -clutch for demo purposes
 -June 8, 2017
  -ghosts 'properly random' (without errors)
@@ -105,10 +106,14 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
 -June 10, 2017
  -Ghost and Player interaction working
  -cleanly resized map
+  -score board now
+  -lives board now
  -no more flashing of pacman + smoother
+  -no lag in loading
  -change in style of movement-- the 'animation'
 -June 11, 2017
  -Smart ghost AI
+  -game over and game won screens
   -no longer random movement
   -switches between states
   -follow player properly
