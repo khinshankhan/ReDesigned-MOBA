@@ -39,7 +39,7 @@ ReDesigned MOBA
  ---------------
  
 ~~~~~~~~~~~~~~~~~~~~~~~
-The classic Pacman game simulated with a few modifications. The player controls Pac-Man through a 'maze' of various dots, known as   Pac-Dots or pellets. There are also four multi-colored ghosts: Blinky (red), Pinky (pink), Inky (blue), and Clyde (orange). In many   versions, each ghost has its own personality (which we chose to skip because it would require many more levels to truly see it),    however, we kept the 'ghost pen' in the middle the same. The goal of the game is to consume all the pellets in a level in order to   proceed to the next one (however, we chose to display a game won screen instead because during a demo we wouldn't be able to show     the levels and also time restraints). The four ghosts roam the 'maze', trying to catch Pacman. If any of the ghosts touch Pacman,     he  loses a life and the game 'resets' in the sense that the eaten pellets are still eaten and the score remains the same. The     'reset' is moving all characters back to original starting positions. When all lives have been lost, the game ends. Pacman is <br> awarded a single bonus life at 10,000 points by default—DIP switches inside the machine (in arcades) can change the required points<br> to 15,000 or 20,000 ,or disable the bonus life altogether (we have disabled this for the time being).
+The classic Pacman game simulated with a few modifications. The player controls Pac-Man through a 'maze' of various dots, known as   Pac-Dots or pellets. There are also four multi-colored ghosts: Blinky (red), Pinky (pink), Inky (blue), and Clyde (orange). In many   versions, each ghost has its own personality (which we chose to skip because it would require many more levels to truly see it),    however, we kept the 'ghost pen' in the middle the same. The goal of the game is to consume all the pellets in a level in order to   proceed to the next one (however, we chose to display a game won screen instead because during a demo we wouldn't be able to show     the levels and also time restraints). The four ghosts roam the 'maze', trying to catch Pacman. If any of the ghosts touch Pacman, he  loses a life and the game 'resets' in the sense that the eaten pellets are still eaten and the score remains the same. The 'reset' is moving all characters back to original starting positions. When all lives have been lost, the game ends. Pacman is awarded a single bonus life at 10,000 points by default—DIP switches inside the machine (in arcades) can change the required points to 15,000 or 20,000 ,or disable the bonus life altogether (we have disabled this for the time being).
 
 IMPORTANT NOTES/ INSTRUCTIONS:
    -the map was already changed from 1024 x 1024 to 600 x 512, please have a screen that can support 600 x 512
@@ -83,5 +83,34 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
 ~~~~~~~~~~~~~~~~~~~~~~~
 (ERASED ALL LOGS RELATED TO LEAGUE OF LEGENDS SIMULATION)
 ~~~~~~~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~~~~~~~
+-June 5, 2017
+ -Viewable Basic Map (1024 x 1024)
+ -Viewable Obstacles
+ -Viewables pellets (not working, one for each 'node')
+ -Player movement (not proper at all)
+ -Short distance 'animation' (with flashing and lag)
+-June 6, 2017
+ -weird 'random' movement of ghosts
+ -illogical pathfinding
+-June 7, 2017
+ -player movement more proper, super laggy
+ -clutch for demo purposes
+-June 8, 2017
+ -ghosts 'properly random' (without errors)
+ -frightened state created
+-June 9, 2017
+ -ghosts start in 'ghost pen'
+ -ghosts don't overlap
+-June 10, 2017
+ -Ghost and Player interaction working
+ -cleanly resized map
+ -no more flashing of pacman + smoother
+ -change in style of movement-- the 'animation'
+-June 11, 2017
+ -Smart ghost AI
+  -no longer random movement
+  -switches between states
+  -follow player properly
+  -'unique', but occasional overlap allowed 
 ~~~~~~~~~~~~~~~~~~~~~~~
