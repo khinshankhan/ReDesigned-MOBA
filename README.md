@@ -40,25 +40,27 @@ ReDesigned MOBA
  
 ~~~~~~~~~~~~~~~~~~~~~~~
 The classic Pacman game simulated with a few modifications. The player controls Pac-Man through a
-'maze' of various dots, known as   Pac-Dots or pellets. There are also four multi-colored ghosts:
-Blinky (red), Pinky (pink), Inky (blue), and Clyde (orange). In many   versions, each ghost has its
+'maze' of various dots, known as Pac-Dots or pellets. There are also four multi-colored ghosts:
+Blinky (red), Pinky (pink), Inky (blue), and Clyde (orange). In many versions, each ghost has its
 own personality (which we chose to skip because it would require many more levels to truly see it),
 however, we kept the 'ghost pen' in the middle the same. The goal of the game is to consume all the
-pellets in a level in order to   proceed to the next one (however, we chose to display a game won
-screen instead because during a demo we wouldn't be able to show     the levels and also time
-restraints). The four ghosts roam the 'maze', trying to catch Pacman. If any of the ghosts touch
-Pacman, he  loses a life and the game 'resets' in the sense that the eaten pellets are still eaten
-and the score remains the same. The 'reset' is moving all characters back to original starting
-positions. When all lives have been lost, the game ends. Pacman is awarded a single bonus life at
-10,000 points by default—DIP switches inside the machine (in arcades) can change the required points
-to 15,000 or 20,000 ,or disable the bonus life altogether (we have disabled this for the time being).
+pellets in a level in order to proceed to the next one (however, we chose to display a game won
+screen instead because during a demo we wouldn't be able to show the levels and also time restraints). 
+The four ghosts roam the 'maze', trying to catch Pacman. If any of the ghosts touch Pacman, he  loses 
+a life and the game 'resets' in the sense that the eaten pellets are still eaten and the score remains 
+the same. The 'reset' is moving all characters back to original starting positions. When all lives have 
+been lost, the game ends. Pacman is awarded a single bonus life at 10,000 points by default—DIP switches
+inside the machine (in arcades) can change the required points to 15,000 or 20,000 ,or disable the bonus 
+life altogether (we have disabled this for the time being).
 
 IMPORTANT NOTES/ INSTRUCTIONS:
    -the map was already changed from 1024 x 1024 to 600 x 512, please have a screen that can support 600 x 512
    -cd Pacman/main and then run main.pde to start game
    -use arrow keys to move (have keyboard with arrow keys! or remap your keyboard, or use on screen keyboard)
-   -'touch' will mean to click on screen (have a pointer device (eg mouse, touch pad, tablet) or remap a key to act like a one)
-   -sometimes when first running the file, you may have to click on the processing screen in order for it to register movements
+   -'touch' will mean to click on screen (have a pointer device (eg mouse, touch pad, tablet) or remap a key 
+    to act like a one)
+   -sometimes when first running the file, you may have to click on the processing screen in order for it to 
+    register movements
 
 WORKING FEATURES / THINGS FOR MR. K TO TEST::
    -Player (Pacman)
@@ -97,7 +99,7 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
     -Ghosts' changes between states sometimes look un-natural, especially when they are in 'scattering'
     -Player can 'camp' near the 'ghost pen' if they were to eat a power up every so often (power ups last by time increments)
    -More maps!
-   -Increasing layer lives (3/4 is already pretty overkill for one level)
+   -Increasing player lives (3/4 is already pretty overkill for one level)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ----------------
@@ -129,7 +131,8 @@ UNRESOLVED BUGS / UNIMPLEMENTED FEATURES:
  -ghosts don't overlap
 -June 10, 2017
  -Ghost and Player interaction working
- -cleanly resized map
+ -cleanly resized map (600 x 512)
+  -worked out math that entailed
   -score board now
   -lives board now
  -no more flashing of pacman + smoother
